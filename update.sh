@@ -6,7 +6,7 @@ IFS=$'\n\t'
 OCP_VERSIONS=(4.13 4.14 4.15 4.16 4.17 4.18 4.19)
 
 # Old (tag-based) image:
-NEW_BUNDLE="quay.io/redhat-user-workloads/ocp-isc-tenant/security-profiles-operator-bundle-release:release-0-9"
+NEW_BUNDLE="quay.io/redhat-user-workloads/ocp-isc-tenant/security-profiles-operator-bundle-release@sha256:e54a9ae5ed3b8d5822d8f1117cf4c4df8fbb3222b55f8fdf78c7ef30baf0861f"
 
 # New registry/repo to use, but we’ll attach the old image’s actual digest.
 REDHAT_REGISTRY_REPO="registry.redhat.io/compliance/openshift-security-profiles-operator-bundle"
@@ -65,8 +65,8 @@ for OCP_V in "${OCP_VERSIONS[@]}"; do
 
   # 2) In-place update: remove any old entry named CSV_NEW, then add one new entry.
   yq eval -i -I1 "
-  (select(.schema == \"olm.channel\" and .name == \"stable\") | .entries) as \$entries |
-  select(.schema == \"olm.channel\" and .name == \"stable\").entries =
+  (select(.schema == \"olm.channel\" and .name == \"release-alpha-rhel-8\") | .entries) as \$entries |
+  select(.schema == \"olm.channel\" and .name == \"release-alpha-rhel-8\").entries =
       (
       \$entries
       | map(select(.name != \"${CSV_NEW}\"))
