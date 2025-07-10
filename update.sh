@@ -14,7 +14,7 @@ REDHAT_REGISTRY_REPO="registry.redhat.io/compliance/openshift-security-profiles-
 # (Optional) Some additional parameters you might use later
 OP_V="0.9.0"
 CSV_NEW="security-profiles-operator.v${OP_V}"
-SKIP_RANGE=">=1.0.0 <${OP_V}"
+SKIP_RANGE=">=0.4.1 <${OP_V}"
 
 echo "⏳ Determining digest for old image: ${NEW_BUNDLE}"
 DIGEST="$(skopeo inspect "docker://${NEW_BUNDLE}" | jq -r '.Digest')"
@@ -47,13 +47,13 @@ for OCP_V in "${OCP_VERSIONS[@]}"; do
   yq eval-all -i "select(.name? != \"${CSV_NEW}\")" "${CATALOG}"
   yq eval -i "del(.entries[] | select(.name? == \"${CSV_NEW}\"))" "${CATALOG}"
 
-  # 1) Find the "last" name in the stable channel's entries array.
+  # 1) Find the "last" name in the release-alpha-rhel-8 channel's entries array.
   LAST_NAME=$(yq eval '
-  select(.schema == "olm.channel" and .name == "stable") |
+  select(.schema == "olm.channel" and .name == "release-alpha-rhel-8") |
   .entries[-1].name
   ' "${CATALOG}")
 
-  echo "Last entry in stable channel is: ${LAST_NAME}"
+  echo "Last entry in release-alpha-rhel-8 channel is: ${LAST_NAME}"
 
   # # --- 1) Render the new bundle into a temp file ---
   if [[ "$OCP_V" =~ ("4.12"|"4.13"|"4.14"|"4.15"|"4.16") ]]; then
