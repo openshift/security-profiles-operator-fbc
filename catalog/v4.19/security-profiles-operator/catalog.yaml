@@ -7,17 +7,20 @@ name: security-profiles-operator
 schema: olm.package
 ---
 entries:
-- name: security-profiles-operator.v0.8.2
-  skipRange: '>=0.4.1 <0.8.2'
-- name: security-profiles-operator.v0.8.4
-  replaces: security-profiles-operator.v0.8.2
-  skipRange: '>=0.4.1 <0.8.4'
-- name: security-profiles-operator.v0.8.5
-  replaces: security-profiles-operator.v0.8.4
-  skipRange: '>=0.4.1 <0.8.5'
-- name: security-profiles-operator.v0.8.6
-  replaces: security-profiles-operator.v0.8.5
-  skipRange: '>=0.4.1 <0.8.6'
+  - name: security-profiles-operator.v0.8.2
+    skipRange: '>=0.4.1 <0.8.2'
+  - name: security-profiles-operator.v0.8.4
+    replaces: security-profiles-operator.v0.8.2
+    skipRange: '>=0.4.1 <0.8.4'
+  - name: security-profiles-operator.v0.8.5
+    replaces: security-profiles-operator.v0.8.4
+    skipRange: '>=0.4.1 <0.8.5'
+  - name: security-profiles-operator.v0.8.6
+    replaces: security-profiles-operator.v0.8.5
+    skipRange: '>=0.4.1 <0.8.6'
+  - name: security-profiles-operator.v0.9.0
+    replaces: security-profiles-operator.v0.8.6
+    skipRange: '>=0.4.1 <0.9.0'
 name: release-alpha-rhel-8
 package: security-profiles-operator
 schema: olm.channel
@@ -26,1565 +29,1928 @@ image: registry.redhat.io/compliance/openshift-security-profiles-operator-bundle
 name: security-profiles-operator.v0.8.2
 package: security-profiles-operator
 properties:
-- type: olm.gvk
-  value:
-    group: security-profiles-operator.x-k8s.io
-    kind: AppArmorProfile
-    version: v1alpha1
-- type: olm.gvk
-  value:
-    group: security-profiles-operator.x-k8s.io
-    kind: ProfileBinding
-    version: v1alpha1
-- type: olm.gvk
-  value:
-    group: security-profiles-operator.x-k8s.io
-    kind: ProfileRecording
-    version: v1alpha1
-- type: olm.gvk
-  value:
-    group: security-profiles-operator.x-k8s.io
-    kind: RawSelinuxProfile
-    version: v1alpha2
-- type: olm.gvk
-  value:
-    group: security-profiles-operator.x-k8s.io
-    kind: SeccompProfile
-    version: v1beta1
-- type: olm.gvk
-  value:
-    group: security-profiles-operator.x-k8s.io
-    kind: SecurityProfileNodeStatus
-    version: v1alpha1
-- type: olm.gvk
-  value:
-    group: security-profiles-operator.x-k8s.io
-    kind: SecurityProfilesOperatorDaemon
-    version: v1alpha1
-- type: olm.gvk
-  value:
-    group: security-profiles-operator.x-k8s.io
-    kind: SelinuxProfile
-    version: v1alpha2
-- type: olm.package
-  value:
-    packageName: security-profiles-operator
-    version: 0.8.2
-- type: olm.csv.metadata
-  value:
-    annotations:
-      alm-examples: |-
-        [
-          {
-            "apiVersion": "security-profiles-operator.x-k8s.io/v1alpha1",
-            "kind": "AppArmorProfile",
-            "metadata": {
-              "annotations": {
-                "description": "Block writing to any files in the disk."
+  - type: olm.gvk
+    value:
+      group: security-profiles-operator.x-k8s.io
+      kind: AppArmorProfile
+      version: v1alpha1
+  - type: olm.gvk
+    value:
+      group: security-profiles-operator.x-k8s.io
+      kind: ProfileBinding
+      version: v1alpha1
+  - type: olm.gvk
+    value:
+      group: security-profiles-operator.x-k8s.io
+      kind: ProfileRecording
+      version: v1alpha1
+  - type: olm.gvk
+    value:
+      group: security-profiles-operator.x-k8s.io
+      kind: RawSelinuxProfile
+      version: v1alpha2
+  - type: olm.gvk
+    value:
+      group: security-profiles-operator.x-k8s.io
+      kind: SeccompProfile
+      version: v1beta1
+  - type: olm.gvk
+    value:
+      group: security-profiles-operator.x-k8s.io
+      kind: SecurityProfileNodeStatus
+      version: v1alpha1
+  - type: olm.gvk
+    value:
+      group: security-profiles-operator.x-k8s.io
+      kind: SecurityProfilesOperatorDaemon
+      version: v1alpha1
+  - type: olm.gvk
+    value:
+      group: security-profiles-operator.x-k8s.io
+      kind: SelinuxProfile
+      version: v1alpha2
+  - type: olm.package
+    value:
+      packageName: security-profiles-operator
+      version: 0.8.2
+  - type: olm.csv.metadata
+    value:
+      annotations:
+        alm-examples: |-
+          [
+            {
+              "apiVersion": "security-profiles-operator.x-k8s.io/v1alpha1",
+              "kind": "AppArmorProfile",
+              "metadata": {
+                "annotations": {
+                  "description": "Block writing to any files in the disk."
+                },
+                "name": "test-profile"
               },
-              "name": "test-profile"
+              "spec": {
+                "policy": "#include \u003ctunables/global\u003e\n\nprofile test-profile flags=(attach_disconnected) {\n  #include \u003cabstractions/base\u003e\n\n  file,\n\n  # Deny all file writes.\n  deny /** w,\n}\n"
+              }
             },
-            "spec": {
-              "policy": "#include \u003ctunables/global\u003e\n\nprofile test-profile flags=(attach_disconnected) {\n  #include \u003cabstractions/base\u003e\n\n  file,\n\n  # Deny all file writes.\n  deny /** w,\n}\n"
-            }
-          },
-          {
-            "apiVersion": "security-profiles-operator.x-k8s.io/v1alpha1",
-            "kind": "SecurityProfilesOperatorDaemon",
-            "metadata": {
-              "name": "spod",
-              "namespace": "security-profiles-operator"
-            },
-            "spec": {
-              "enableAppArmor": false,
-              "enableLogEnricher": false,
-              "enableSelinux": false
-            }
-          },
-          {
-            "apiVersion": "security-profiles-operator.x-k8s.io/v1alpha1",
-            "kind": "ProfileRecording",
-            "metadata": {
-              "name": "test-recording"
-            },
-            "spec": {
-              "kind": "SeccompProfile",
-              "podSelector": {
-                "matchLabels": {
-                  "app": "alpine"
-                }
+            {
+              "apiVersion": "security-profiles-operator.x-k8s.io/v1alpha1",
+              "kind": "SecurityProfilesOperatorDaemon",
+              "metadata": {
+                "name": "spod",
+                "namespace": "security-profiles-operator"
               },
-              "recorder": "bpf"
-            }
-          },
-          {
-            "apiVersion": "security-profiles-operator.x-k8s.io/v1alpha1",
-            "kind": "ProfileBinding",
-            "metadata": {
-              "name": "profile-binding"
+              "spec": {
+                "enableAppArmor": false,
+                "enableLogEnricher": false,
+                "enableSelinux": false
+              }
             },
-            "spec": {
-              "image": "nginx:1.19.1",
-              "profileRef": {
+            {
+              "apiVersion": "security-profiles-operator.x-k8s.io/v1alpha1",
+              "kind": "ProfileRecording",
+              "metadata": {
+                "name": "test-recording"
+              },
+              "spec": {
                 "kind": "SeccompProfile",
+                "podSelector": {
+                  "matchLabels": {
+                    "app": "alpine"
+                  }
+                },
+                "recorder": "bpf"
+              }
+            },
+            {
+              "apiVersion": "security-profiles-operator.x-k8s.io/v1alpha1",
+              "kind": "ProfileBinding",
+              "metadata": {
+                "name": "profile-binding"
+              },
+              "spec": {
+                "image": "nginx:1.19.1",
+                "profileRef": {
+                  "kind": "SeccompProfile",
+                  "name": "profile-allow-unsafe"
+                }
+              }
+            },
+            {
+              "apiVersion": "security-profiles-operator.x-k8s.io/v1alpha2",
+              "kind": "RawSelinuxProfile",
+              "metadata": {
+                "name": "errorlogger"
+              },
+              "spec": {
+                "policy": "(blockinherit container)\n(allow process var_log_t ( dir ( open read getattr lock search ioctl add_name remove_name write ))) \n(allow process var_log_t ( file ( getattr read write append ioctl lock map open create  ))) \n(allow process var_log_t ( sock_file ( getattr read write append open  ))) \n"
+              }
+            },
+            {
+              "apiVersion": "security-profiles-operator.x-k8s.io/v1beta1",
+              "kind": "SeccompProfile",
+              "metadata": {
+                "annotations": {
+                  "description": "Blocks all syscalls."
+                },
+                "name": "profile-block-all"
+              },
+              "spec": {
+                "defaultAction": "SCMP_ACT_ERRNO"
+              }
+            },
+            {
+              "apiVersion": "security-profiles-operator.x-k8s.io/v1beta1",
+              "kind": "SeccompProfile",
+              "metadata": {
+                "annotations": {
+                  "description": "UNSAFE: Allows all syscalls whilst logging their use. Similar to running as unconfined in terms of enforcement."
+                },
+                "name": "profile-complain-unsafe"
+              },
+              "spec": {
+                "defaultAction": "SCMP_ACT_LOG"
+              }
+            },
+            {
+              "apiVersion": "security-profiles-operator.x-k8s.io/v1beta1",
+              "kind": "SeccompProfile",
+              "metadata": {
+                "annotations": {
+                  "description": "UNSAFE: Allows all syscalls. Similar to running as unconfined as it provides no enforcement."
+                },
                 "name": "profile-allow-unsafe"
+              },
+              "spec": {
+                "defaultAction": "SCMP_ACT_ALLOW"
+              }
+            },
+            {
+              "apiVersion": "security-profiles-operator.x-k8s.io/v1beta1",
+              "kind": "SeccompProfile",
+              "metadata": {
+                "annotations": {
+                  "description": "Enables complain mode whilst blocking high-risk syscalls. Some essential syscalls are allowed to decrease log noise."
+                },
+                "name": "profile-complain-block-high-risk"
+              },
+              "spec": {
+                "architectures": [
+                  "SCMP_ARCH_X86_64"
+                ],
+                "defaultAction": "SCMP_ACT_LOG",
+                "syscalls": [
+                  {
+                    "action": "SCMP_ACT_ALLOW",
+                    "names": [
+                      "exit",
+                      "exit_group",
+                      "futex",
+                      "nanosleep"
+                    ]
+                  },
+                  {
+                    "action": "SCMP_ACT_ERRNO",
+                    "names": [
+                      "acct",
+                      "add_key",
+                      "bpf",
+                      "clock_adjtime",
+                      "clock_settime",
+                      "create_module",
+                      "delete_module",
+                      "finit_module",
+                      "get_kernel_syms",
+                      "get_mempolicy",
+                      "init_module",
+                      "ioperm",
+                      "iopl",
+                      "kcmp",
+                      "kexec_file_load",
+                      "kexec_load",
+                      "keyctl",
+                      "lookup_dcookie",
+                      "mbind",
+                      "mount",
+                      "move_pages",
+                      "name_to_handle_at",
+                      "nfsservctl",
+                      "open_by_handle_at",
+                      "perf_event_open",
+                      "personality",
+                      "pivot_root",
+                      "process_vm_readv",
+                      "process_vm_writev",
+                      "ptrace",
+                      "query_module",
+                      "quotactl",
+                      "reboot",
+                      "request_key",
+                      "set_mempolicy",
+                      "setns",
+                      "settimeofday",
+                      "stime",
+                      "swapoff",
+                      "swapon",
+                      "_sysctl",
+                      "sysfs",
+                      "umount2",
+                      "umount",
+                      "unshare",
+                      "uselib",
+                      "userfaultfd",
+                      "ustat",
+                      "vm86old",
+                      "vm86"
+                    ]
+                  }
+                ]
+              }
+            },
+            {
+              "apiVersion": "security-profiles-operator.x-k8s.io/v1alpha2",
+              "kind": "SelinuxProfile",
+              "metadata": {
+                "name": "errorlogger"
+              },
+              "spec": {
+                "allow": {
+                  "var_log_t": {
+                    "dir": [
+                      "open",
+                      "read",
+                      "getattr",
+                      "lock",
+                      "search",
+                      "ioctl",
+                      "add_name",
+                      "remove_name",
+                      "write"
+                    ],
+                    "file": [
+                      "getattr",
+                      "read",
+                      "write",
+                      "append",
+                      "ioctl",
+                      "lock",
+                      "map",
+                      "open",
+                      "create"
+                    ],
+                    "sock_file": [
+                      "getattr",
+                      "read",
+                      "write",
+                      "append",
+                      "open"
+                    ]
+                  }
+                },
+                "inherit": [
+                  {
+                    "name": "container"
+                  }
+                ]
               }
             }
-          },
-          {
-            "apiVersion": "security-profiles-operator.x-k8s.io/v1alpha2",
-            "kind": "RawSelinuxProfile",
-            "metadata": {
-              "name": "errorlogger"
-            },
-            "spec": {
-              "policy": "(blockinherit container)\n(allow process var_log_t ( dir ( open read getattr lock search ioctl add_name remove_name write ))) \n(allow process var_log_t ( file ( getattr read write append ioctl lock map open create  ))) \n(allow process var_log_t ( sock_file ( getattr read write append open  ))) \n"
-            }
-          },
-          {
-            "apiVersion": "security-profiles-operator.x-k8s.io/v1beta1",
-            "kind": "SeccompProfile",
-            "metadata": {
-              "annotations": {
-                "description": "Blocks all syscalls."
-              },
-              "name": "profile-block-all"
-            },
-            "spec": {
-              "defaultAction": "SCMP_ACT_ERRNO"
-            }
-          },
-          {
-            "apiVersion": "security-profiles-operator.x-k8s.io/v1beta1",
-            "kind": "SeccompProfile",
-            "metadata": {
-              "annotations": {
-                "description": "UNSAFE: Allows all syscalls whilst logging their use. Similar to running as unconfined in terms of enforcement."
-              },
-              "name": "profile-complain-unsafe"
-            },
-            "spec": {
-              "defaultAction": "SCMP_ACT_LOG"
-            }
-          },
-          {
-            "apiVersion": "security-profiles-operator.x-k8s.io/v1beta1",
-            "kind": "SeccompProfile",
-            "metadata": {
-              "annotations": {
-                "description": "UNSAFE: Allows all syscalls. Similar to running as unconfined as it provides no enforcement."
-              },
-              "name": "profile-allow-unsafe"
-            },
-            "spec": {
-              "defaultAction": "SCMP_ACT_ALLOW"
-            }
-          },
-          {
-            "apiVersion": "security-profiles-operator.x-k8s.io/v1beta1",
-            "kind": "SeccompProfile",
-            "metadata": {
-              "annotations": {
-                "description": "Enables complain mode whilst blocking high-risk syscalls. Some essential syscalls are allowed to decrease log noise."
-              },
-              "name": "profile-complain-block-high-risk"
-            },
-            "spec": {
-              "architectures": [
-                "SCMP_ARCH_X86_64"
-              ],
-              "defaultAction": "SCMP_ACT_LOG",
-              "syscalls": [
-                {
-                  "action": "SCMP_ACT_ALLOW",
-                  "names": [
-                    "exit",
-                    "exit_group",
-                    "futex",
-                    "nanosleep"
-                  ]
-                },
-                {
-                  "action": "SCMP_ACT_ERRNO",
-                  "names": [
-                    "acct",
-                    "add_key",
-                    "bpf",
-                    "clock_adjtime",
-                    "clock_settime",
-                    "create_module",
-                    "delete_module",
-                    "finit_module",
-                    "get_kernel_syms",
-                    "get_mempolicy",
-                    "init_module",
-                    "ioperm",
-                    "iopl",
-                    "kcmp",
-                    "kexec_file_load",
-                    "kexec_load",
-                    "keyctl",
-                    "lookup_dcookie",
-                    "mbind",
-                    "mount",
-                    "move_pages",
-                    "name_to_handle_at",
-                    "nfsservctl",
-                    "open_by_handle_at",
-                    "perf_event_open",
-                    "personality",
-                    "pivot_root",
-                    "process_vm_readv",
-                    "process_vm_writev",
-                    "ptrace",
-                    "query_module",
-                    "quotactl",
-                    "reboot",
-                    "request_key",
-                    "set_mempolicy",
-                    "setns",
-                    "settimeofday",
-                    "stime",
-                    "swapoff",
-                    "swapon",
-                    "_sysctl",
-                    "sysfs",
-                    "umount2",
-                    "umount",
-                    "unshare",
-                    "uselib",
-                    "userfaultfd",
-                    "ustat",
-                    "vm86old",
-                    "vm86"
-                  ]
-                }
-              ]
-            }
-          },
-          {
-            "apiVersion": "security-profiles-operator.x-k8s.io/v1alpha2",
-            "kind": "SelinuxProfile",
-            "metadata": {
-              "name": "errorlogger"
-            },
-            "spec": {
-              "allow": {
-                "var_log_t": {
-                  "dir": [
-                    "open",
-                    "read",
-                    "getattr",
-                    "lock",
-                    "search",
-                    "ioctl",
-                    "add_name",
-                    "remove_name",
-                    "write"
-                  ],
-                  "file": [
-                    "getattr",
-                    "read",
-                    "write",
-                    "append",
-                    "ioctl",
-                    "lock",
-                    "map",
-                    "open",
-                    "create"
-                  ],
-                  "sock_file": [
-                    "getattr",
-                    "read",
-                    "write",
-                    "append",
-                    "open"
-                  ]
-                }
-              },
-              "inherit": [
-                {
-                  "name": "container"
-                }
-              ]
-            }
-          }
-        ]
-      capabilities: Basic Install
-      categories: Security
-      olm.skipRange: '>=0.4.1 <0.8.2'
-      operatorframework.io/cluster-monitoring: "true"
-      operatorframework.io/suggested-namespace: openshift-security-profiles
-      operators.openshift.io/valid-subscription: '["OpenShift Kubernetes Engine",
-        "OpenShift Container Platform", "OpenShift Platform Plus"]'
-      operators.operatorframework.io/builder: operator-sdk-v1.25.0
-      operators.operatorframework.io/project_layout: go.kubebuilder.io/v3
-    apiServiceDefinitions: {}
-    crdDescriptions:
-      owned:
-      - description: ProfileBinding is the Schema for the profilebindings API.
-        displayName: Profile Binding
-        kind: ProfileBinding
-        name: profilebindings.security-profiles-operator.x-k8s.io
-        version: v1alpha1
-      - description: ProfileRecording is the Schema for the profilerecordings API.
-        displayName: Profile Recording
-        kind: ProfileRecording
-        name: profilerecordings.security-profiles-operator.x-k8s.io
-        version: v1alpha1
-      - description: SeccompProfile is a cluster level specification for a seccomp
-          profile. See https://github.com/opencontainers/runtime-spec/blob/master/config-linux.md#seccomp
-        displayName: Seccomp Profile
-        kind: SeccompProfile
-        name: seccompprofiles.security-profiles-operator.x-k8s.io
-        version: v1beta1
-      - description: SecurityProfileNodeStatus is a per-node status of a security
-          profile
-        displayName: Security Profile Node Status
-        kind: SecurityProfileNodeStatus
-        name: securityprofilenodestatuses.security-profiles-operator.x-k8s.io
-        version: v1alpha1
-      - description: SecurityProfilesOperatorDaemon is the Schema to configure the
-          spod deployment.
-        displayName: Security Profiles Operator Daemon
-        kind: SecurityProfilesOperatorDaemon
-        name: securityprofilesoperatordaemons.security-profiles-operator.x-k8s.io
-        version: v1alpha1
-      - kind: RawSelinuxProfile
-        name: rawselinuxprofiles.security-profiles-operator.x-k8s.io
-        version: v1alpha2
-      - description: SelinuxProfile is the Schema for the selinuxprofiles API.
-        displayName: Selinux Profile
-        kind: SelinuxProfile
-        name: selinuxprofiles.security-profiles-operator.x-k8s.io
-        version: v1alpha2
-      - description: AppArmorProfile is a cluster level specification for an AppArmor
-          profile.
-        displayName: App Armor Profile
-        kind: AppArmorProfile
-        name: apparmorprofiles.security-profiles-operator.x-k8s.io
-        version: v1alpha1
-    description: SPO is an operator which aims to make it easier for users to use
-      SELinux, seccomp and AppArmor in Kubernetes clusters
-    displayName: Security Profiles Operator
-    installModes:
-    - supported: true
-      type: OwnNamespace
-    - supported: true
-      type: SingleNamespace
-    - supported: true
-      type: MultiNamespace
-    - supported: true
-      type: AllNamespaces
-    keywords:
-    - security
-    - selinux
-    - seccomp
-    - apparmor
-    - ebpf
-    links:
-    - name: Security Profiles Operator
-      url: https://github.com/openshift/security-profiles-operator
-    maintainers:
-    - email: support@redhat.com
-      name: Red Hat support
-    maturity: alpha
-    provider:
-      name: Red Hat
-      url: https://www.redhat.com
+          ]
+        capabilities: Basic Install
+        categories: Security
+        olm.skipRange: '>=0.4.1 <0.8.2'
+        operatorframework.io/cluster-monitoring: "true"
+        operatorframework.io/suggested-namespace: openshift-security-profiles
+        operators.openshift.io/valid-subscription: '["OpenShift Kubernetes Engine", "OpenShift Container Platform", "OpenShift Platform Plus"]'
+        operators.operatorframework.io/builder: operator-sdk-v1.25.0
+        operators.operatorframework.io/project_layout: go.kubebuilder.io/v3
+      apiServiceDefinitions: {}
+      crdDescriptions:
+        owned:
+          - description: ProfileBinding is the Schema for the profilebindings API.
+            displayName: Profile Binding
+            kind: ProfileBinding
+            name: profilebindings.security-profiles-operator.x-k8s.io
+            version: v1alpha1
+          - description: ProfileRecording is the Schema for the profilerecordings API.
+            displayName: Profile Recording
+            kind: ProfileRecording
+            name: profilerecordings.security-profiles-operator.x-k8s.io
+            version: v1alpha1
+          - description: SeccompProfile is a cluster level specification for a seccomp profile. See https://github.com/opencontainers/runtime-spec/blob/master/config-linux.md#seccomp
+            displayName: Seccomp Profile
+            kind: SeccompProfile
+            name: seccompprofiles.security-profiles-operator.x-k8s.io
+            version: v1beta1
+          - description: SecurityProfileNodeStatus is a per-node status of a security profile
+            displayName: Security Profile Node Status
+            kind: SecurityProfileNodeStatus
+            name: securityprofilenodestatuses.security-profiles-operator.x-k8s.io
+            version: v1alpha1
+          - description: SecurityProfilesOperatorDaemon is the Schema to configure the spod deployment.
+            displayName: Security Profiles Operator Daemon
+            kind: SecurityProfilesOperatorDaemon
+            name: securityprofilesoperatordaemons.security-profiles-operator.x-k8s.io
+            version: v1alpha1
+          - kind: RawSelinuxProfile
+            name: rawselinuxprofiles.security-profiles-operator.x-k8s.io
+            version: v1alpha2
+          - description: SelinuxProfile is the Schema for the selinuxprofiles API.
+            displayName: Selinux Profile
+            kind: SelinuxProfile
+            name: selinuxprofiles.security-profiles-operator.x-k8s.io
+            version: v1alpha2
+          - description: AppArmorProfile is a cluster level specification for an AppArmor profile.
+            displayName: App Armor Profile
+            kind: AppArmorProfile
+            name: apparmorprofiles.security-profiles-operator.x-k8s.io
+            version: v1alpha1
+      description: SPO is an operator which aims to make it easier for users to use SELinux, seccomp and AppArmor in Kubernetes clusters
+      displayName: Security Profiles Operator
+      installModes:
+        - supported: true
+          type: OwnNamespace
+        - supported: true
+          type: SingleNamespace
+        - supported: true
+          type: MultiNamespace
+        - supported: true
+          type: AllNamespaces
+      keywords:
+        - security
+        - selinux
+        - seccomp
+        - apparmor
+        - ebpf
+      links:
+        - name: Security Profiles Operator
+          url: https://github.com/openshift/security-profiles-operator
+      maintainers:
+        - email: support@redhat.com
+          name: Red Hat support
+      maturity: alpha
+      provider:
+        name: Red Hat
+        url: https://www.redhat.com
 relatedImages:
-- image: registry.redhat.io/compliance/openshift-security-profiles-operator-bundle@sha256:5f0f20e6f580b18126ebbdf66457f3aaad6ebb73a2724b4e79581311582b3274
-  name: ""
-- image: registry.redhat.io/compliance/openshift-security-profiles-rhel8-operator@sha256:85103123c0834339117b4efc4998bb06b75683f7251169deee5ccba96030ae0b
-  name: security-profiles-operator
-- image: registry.redhat.io/compliance/openshift-selinuxd-rhel8@sha256:7b1fe4f45b6de19e17fbc5b88e9633df09e60bf833e5b1e13274b3b0491b42a1
-  name: selinuxd
-- image: registry.redhat.io/compliance/openshift-selinuxd-rhel8@sha256:7b1fe4f45b6de19e17fbc5b88e9633df09e60bf833e5b1e13274b3b0491b42a1
-  name: selinuxd_el8
-- image: registry.redhat.io/compliance/openshift-selinuxd-rhel9@sha256:07386b0e0416b1c053e10d6a02479fbdd35ca97cc583a919ed53daacd029915d
-  name: selinuxd_el9
-- image: registry.redhat.io/openshift4/ose-kube-rbac-proxy@sha256:f11f71448986aa17abec9caadb568a6cc34ef1a7898e6dc20bc6a512830ba476
-  name: rbac_proxy
+  - image: registry.redhat.io/compliance/openshift-security-profiles-operator-bundle@sha256:5f0f20e6f580b18126ebbdf66457f3aaad6ebb73a2724b4e79581311582b3274
+    name: ""
+  - image: registry.redhat.io/compliance/openshift-security-profiles-rhel8-operator@sha256:85103123c0834339117b4efc4998bb06b75683f7251169deee5ccba96030ae0b
+    name: security-profiles-operator
+  - image: registry.redhat.io/compliance/openshift-selinuxd-rhel8@sha256:7b1fe4f45b6de19e17fbc5b88e9633df09e60bf833e5b1e13274b3b0491b42a1
+    name: selinuxd
+  - image: registry.redhat.io/compliance/openshift-selinuxd-rhel8@sha256:7b1fe4f45b6de19e17fbc5b88e9633df09e60bf833e5b1e13274b3b0491b42a1
+    name: selinuxd_el8
+  - image: registry.redhat.io/compliance/openshift-selinuxd-rhel9@sha256:07386b0e0416b1c053e10d6a02479fbdd35ca97cc583a919ed53daacd029915d
+    name: selinuxd_el9
+  - image: registry.redhat.io/openshift4/ose-kube-rbac-proxy@sha256:f11f71448986aa17abec9caadb568a6cc34ef1a7898e6dc20bc6a512830ba476
+    name: rbac_proxy
 schema: olm.bundle
 ---
 image: registry.redhat.io/compliance/openshift-security-profiles-operator-bundle@sha256:beb3f94933d66193f0ce2f9904acde691281a7218aa7c007f2e2b69f9fd5c2d0
 name: security-profiles-operator.v0.8.4
 package: security-profiles-operator
 properties:
-- type: olm.gvk
-  value:
-    group: security-profiles-operator.x-k8s.io
-    kind: AppArmorProfile
-    version: v1alpha1
-- type: olm.gvk
-  value:
-    group: security-profiles-operator.x-k8s.io
-    kind: ProfileBinding
-    version: v1alpha1
-- type: olm.gvk
-  value:
-    group: security-profiles-operator.x-k8s.io
-    kind: ProfileRecording
-    version: v1alpha1
-- type: olm.gvk
-  value:
-    group: security-profiles-operator.x-k8s.io
-    kind: RawSelinuxProfile
-    version: v1alpha2
-- type: olm.gvk
-  value:
-    group: security-profiles-operator.x-k8s.io
-    kind: SeccompProfile
-    version: v1beta1
-- type: olm.gvk
-  value:
-    group: security-profiles-operator.x-k8s.io
-    kind: SecurityProfileNodeStatus
-    version: v1alpha1
-- type: olm.gvk
-  value:
-    group: security-profiles-operator.x-k8s.io
-    kind: SecurityProfilesOperatorDaemon
-    version: v1alpha1
-- type: olm.gvk
-  value:
-    group: security-profiles-operator.x-k8s.io
-    kind: SelinuxProfile
-    version: v1alpha2
-- type: olm.package
-  value:
-    packageName: security-profiles-operator
-    version: 0.8.4
-- type: olm.csv.metadata
-  value:
-    annotations:
-      alm-examples: |-
-        [
-          {
-            "apiVersion": "security-profiles-operator.x-k8s.io/v1alpha1",
-            "kind": "AppArmorProfile",
-            "metadata": {
-              "annotations": {
-                "description": "Block writing to any files in the disk."
+  - type: olm.gvk
+    value:
+      group: security-profiles-operator.x-k8s.io
+      kind: AppArmorProfile
+      version: v1alpha1
+  - type: olm.gvk
+    value:
+      group: security-profiles-operator.x-k8s.io
+      kind: ProfileBinding
+      version: v1alpha1
+  - type: olm.gvk
+    value:
+      group: security-profiles-operator.x-k8s.io
+      kind: ProfileRecording
+      version: v1alpha1
+  - type: olm.gvk
+    value:
+      group: security-profiles-operator.x-k8s.io
+      kind: RawSelinuxProfile
+      version: v1alpha2
+  - type: olm.gvk
+    value:
+      group: security-profiles-operator.x-k8s.io
+      kind: SeccompProfile
+      version: v1beta1
+  - type: olm.gvk
+    value:
+      group: security-profiles-operator.x-k8s.io
+      kind: SecurityProfileNodeStatus
+      version: v1alpha1
+  - type: olm.gvk
+    value:
+      group: security-profiles-operator.x-k8s.io
+      kind: SecurityProfilesOperatorDaemon
+      version: v1alpha1
+  - type: olm.gvk
+    value:
+      group: security-profiles-operator.x-k8s.io
+      kind: SelinuxProfile
+      version: v1alpha2
+  - type: olm.package
+    value:
+      packageName: security-profiles-operator
+      version: 0.8.4
+  - type: olm.csv.metadata
+    value:
+      annotations:
+        alm-examples: |-
+          [
+            {
+              "apiVersion": "security-profiles-operator.x-k8s.io/v1alpha1",
+              "kind": "AppArmorProfile",
+              "metadata": {
+                "annotations": {
+                  "description": "Block writing to any files in the disk."
+                },
+                "name": "test-profile"
               },
-              "name": "test-profile"
+              "spec": {
+                "policy": "#include \u003ctunables/global\u003e\n\nprofile test-profile flags=(attach_disconnected) {\n  #include \u003cabstractions/base\u003e\n\n  file,\n\n  # Deny all file writes.\n  deny /** w,\n}\n"
+              }
             },
-            "spec": {
-              "policy": "#include \u003ctunables/global\u003e\n\nprofile test-profile flags=(attach_disconnected) {\n  #include \u003cabstractions/base\u003e\n\n  file,\n\n  # Deny all file writes.\n  deny /** w,\n}\n"
-            }
-          },
-          {
-            "apiVersion": "security-profiles-operator.x-k8s.io/v1alpha1",
-            "kind": "SecurityProfilesOperatorDaemon",
-            "metadata": {
-              "name": "spod",
-              "namespace": "security-profiles-operator"
-            },
-            "spec": {
-              "enableAppArmor": false,
-              "enableLogEnricher": false,
-              "enableSelinux": false
-            }
-          },
-          {
-            "apiVersion": "security-profiles-operator.x-k8s.io/v1alpha1",
-            "kind": "ProfileRecording",
-            "metadata": {
-              "name": "test-recording"
-            },
-            "spec": {
-              "kind": "SeccompProfile",
-              "podSelector": {
-                "matchLabels": {
-                  "app": "alpine"
-                }
+            {
+              "apiVersion": "security-profiles-operator.x-k8s.io/v1alpha1",
+              "kind": "SecurityProfilesOperatorDaemon",
+              "metadata": {
+                "name": "spod",
+                "namespace": "security-profiles-operator"
               },
-              "recorder": "bpf"
-            }
-          },
-          {
-            "apiVersion": "security-profiles-operator.x-k8s.io/v1alpha1",
-            "kind": "ProfileBinding",
-            "metadata": {
-              "name": "profile-binding"
+              "spec": {
+                "enableAppArmor": false,
+                "enableLogEnricher": false,
+                "enableSelinux": false
+              }
             },
-            "spec": {
-              "image": "nginx:1.19.1",
-              "profileRef": {
+            {
+              "apiVersion": "security-profiles-operator.x-k8s.io/v1alpha1",
+              "kind": "ProfileRecording",
+              "metadata": {
+                "name": "test-recording"
+              },
+              "spec": {
                 "kind": "SeccompProfile",
+                "podSelector": {
+                  "matchLabels": {
+                    "app": "alpine"
+                  }
+                },
+                "recorder": "bpf"
+              }
+            },
+            {
+              "apiVersion": "security-profiles-operator.x-k8s.io/v1alpha1",
+              "kind": "ProfileBinding",
+              "metadata": {
+                "name": "profile-binding"
+              },
+              "spec": {
+                "image": "nginx:1.19.1",
+                "profileRef": {
+                  "kind": "SeccompProfile",
+                  "name": "profile-allow-unsafe"
+                }
+              }
+            },
+            {
+              "apiVersion": "security-profiles-operator.x-k8s.io/v1alpha2",
+              "kind": "RawSelinuxProfile",
+              "metadata": {
+                "name": "errorlogger"
+              },
+              "spec": {
+                "policy": "(blockinherit container)\n(allow process var_log_t ( dir ( open read getattr lock search ioctl add_name remove_name write ))) \n(allow process var_log_t ( file ( getattr read write append ioctl lock map open create  ))) \n(allow process var_log_t ( sock_file ( getattr read write append open  ))) \n"
+              }
+            },
+            {
+              "apiVersion": "security-profiles-operator.x-k8s.io/v1beta1",
+              "kind": "SeccompProfile",
+              "metadata": {
+                "annotations": {
+                  "description": "Blocks all syscalls."
+                },
+                "name": "profile-block-all"
+              },
+              "spec": {
+                "defaultAction": "SCMP_ACT_ERRNO"
+              }
+            },
+            {
+              "apiVersion": "security-profiles-operator.x-k8s.io/v1beta1",
+              "kind": "SeccompProfile",
+              "metadata": {
+                "annotations": {
+                  "description": "UNSAFE: Allows all syscalls whilst logging their use. Similar to running as unconfined in terms of enforcement."
+                },
+                "name": "profile-complain-unsafe"
+              },
+              "spec": {
+                "defaultAction": "SCMP_ACT_LOG"
+              }
+            },
+            {
+              "apiVersion": "security-profiles-operator.x-k8s.io/v1beta1",
+              "kind": "SeccompProfile",
+              "metadata": {
+                "annotations": {
+                  "description": "UNSAFE: Allows all syscalls. Similar to running as unconfined as it provides no enforcement."
+                },
                 "name": "profile-allow-unsafe"
+              },
+              "spec": {
+                "defaultAction": "SCMP_ACT_ALLOW"
+              }
+            },
+            {
+              "apiVersion": "security-profiles-operator.x-k8s.io/v1beta1",
+              "kind": "SeccompProfile",
+              "metadata": {
+                "annotations": {
+                  "description": "Enables complain mode whilst blocking high-risk syscalls. Some essential syscalls are allowed to decrease log noise."
+                },
+                "name": "profile-complain-block-high-risk"
+              },
+              "spec": {
+                "architectures": [
+                  "SCMP_ARCH_X86_64"
+                ],
+                "defaultAction": "SCMP_ACT_LOG",
+                "syscalls": [
+                  {
+                    "action": "SCMP_ACT_ALLOW",
+                    "names": [
+                      "exit",
+                      "exit_group",
+                      "futex",
+                      "nanosleep"
+                    ]
+                  },
+                  {
+                    "action": "SCMP_ACT_ERRNO",
+                    "names": [
+                      "acct",
+                      "add_key",
+                      "bpf",
+                      "clock_adjtime",
+                      "clock_settime",
+                      "create_module",
+                      "delete_module",
+                      "finit_module",
+                      "get_kernel_syms",
+                      "get_mempolicy",
+                      "init_module",
+                      "ioperm",
+                      "iopl",
+                      "kcmp",
+                      "kexec_file_load",
+                      "kexec_load",
+                      "keyctl",
+                      "lookup_dcookie",
+                      "mbind",
+                      "mount",
+                      "move_pages",
+                      "name_to_handle_at",
+                      "nfsservctl",
+                      "open_by_handle_at",
+                      "perf_event_open",
+                      "personality",
+                      "pivot_root",
+                      "process_vm_readv",
+                      "process_vm_writev",
+                      "ptrace",
+                      "query_module",
+                      "quotactl",
+                      "reboot",
+                      "request_key",
+                      "set_mempolicy",
+                      "setns",
+                      "settimeofday",
+                      "stime",
+                      "swapoff",
+                      "swapon",
+                      "_sysctl",
+                      "sysfs",
+                      "umount2",
+                      "umount",
+                      "unshare",
+                      "uselib",
+                      "userfaultfd",
+                      "ustat",
+                      "vm86old",
+                      "vm86"
+                    ]
+                  }
+                ]
+              }
+            },
+            {
+              "apiVersion": "security-profiles-operator.x-k8s.io/v1alpha2",
+              "kind": "SelinuxProfile",
+              "metadata": {
+                "name": "errorlogger"
+              },
+              "spec": {
+                "allow": {
+                  "var_log_t": {
+                    "dir": [
+                      "open",
+                      "read",
+                      "getattr",
+                      "lock",
+                      "search",
+                      "ioctl",
+                      "add_name",
+                      "remove_name",
+                      "write"
+                    ],
+                    "file": [
+                      "getattr",
+                      "read",
+                      "write",
+                      "append",
+                      "ioctl",
+                      "lock",
+                      "map",
+                      "open",
+                      "create"
+                    ],
+                    "sock_file": [
+                      "getattr",
+                      "read",
+                      "write",
+                      "append",
+                      "open"
+                    ]
+                  }
+                },
+                "inherit": [
+                  {
+                    "name": "container"
+                  }
+                ]
               }
             }
-          },
-          {
-            "apiVersion": "security-profiles-operator.x-k8s.io/v1alpha2",
-            "kind": "RawSelinuxProfile",
-            "metadata": {
-              "name": "errorlogger"
-            },
-            "spec": {
-              "policy": "(blockinherit container)\n(allow process var_log_t ( dir ( open read getattr lock search ioctl add_name remove_name write ))) \n(allow process var_log_t ( file ( getattr read write append ioctl lock map open create  ))) \n(allow process var_log_t ( sock_file ( getattr read write append open  ))) \n"
-            }
-          },
-          {
-            "apiVersion": "security-profiles-operator.x-k8s.io/v1beta1",
-            "kind": "SeccompProfile",
-            "metadata": {
-              "annotations": {
-                "description": "Blocks all syscalls."
-              },
-              "name": "profile-block-all"
-            },
-            "spec": {
-              "defaultAction": "SCMP_ACT_ERRNO"
-            }
-          },
-          {
-            "apiVersion": "security-profiles-operator.x-k8s.io/v1beta1",
-            "kind": "SeccompProfile",
-            "metadata": {
-              "annotations": {
-                "description": "UNSAFE: Allows all syscalls whilst logging their use. Similar to running as unconfined in terms of enforcement."
-              },
-              "name": "profile-complain-unsafe"
-            },
-            "spec": {
-              "defaultAction": "SCMP_ACT_LOG"
-            }
-          },
-          {
-            "apiVersion": "security-profiles-operator.x-k8s.io/v1beta1",
-            "kind": "SeccompProfile",
-            "metadata": {
-              "annotations": {
-                "description": "UNSAFE: Allows all syscalls. Similar to running as unconfined as it provides no enforcement."
-              },
-              "name": "profile-allow-unsafe"
-            },
-            "spec": {
-              "defaultAction": "SCMP_ACT_ALLOW"
-            }
-          },
-          {
-            "apiVersion": "security-profiles-operator.x-k8s.io/v1beta1",
-            "kind": "SeccompProfile",
-            "metadata": {
-              "annotations": {
-                "description": "Enables complain mode whilst blocking high-risk syscalls. Some essential syscalls are allowed to decrease log noise."
-              },
-              "name": "profile-complain-block-high-risk"
-            },
-            "spec": {
-              "architectures": [
-                "SCMP_ARCH_X86_64"
-              ],
-              "defaultAction": "SCMP_ACT_LOG",
-              "syscalls": [
-                {
-                  "action": "SCMP_ACT_ALLOW",
-                  "names": [
-                    "exit",
-                    "exit_group",
-                    "futex",
-                    "nanosleep"
-                  ]
-                },
-                {
-                  "action": "SCMP_ACT_ERRNO",
-                  "names": [
-                    "acct",
-                    "add_key",
-                    "bpf",
-                    "clock_adjtime",
-                    "clock_settime",
-                    "create_module",
-                    "delete_module",
-                    "finit_module",
-                    "get_kernel_syms",
-                    "get_mempolicy",
-                    "init_module",
-                    "ioperm",
-                    "iopl",
-                    "kcmp",
-                    "kexec_file_load",
-                    "kexec_load",
-                    "keyctl",
-                    "lookup_dcookie",
-                    "mbind",
-                    "mount",
-                    "move_pages",
-                    "name_to_handle_at",
-                    "nfsservctl",
-                    "open_by_handle_at",
-                    "perf_event_open",
-                    "personality",
-                    "pivot_root",
-                    "process_vm_readv",
-                    "process_vm_writev",
-                    "ptrace",
-                    "query_module",
-                    "quotactl",
-                    "reboot",
-                    "request_key",
-                    "set_mempolicy",
-                    "setns",
-                    "settimeofday",
-                    "stime",
-                    "swapoff",
-                    "swapon",
-                    "_sysctl",
-                    "sysfs",
-                    "umount2",
-                    "umount",
-                    "unshare",
-                    "uselib",
-                    "userfaultfd",
-                    "ustat",
-                    "vm86old",
-                    "vm86"
-                  ]
-                }
-              ]
-            }
-          },
-          {
-            "apiVersion": "security-profiles-operator.x-k8s.io/v1alpha2",
-            "kind": "SelinuxProfile",
-            "metadata": {
-              "name": "errorlogger"
-            },
-            "spec": {
-              "allow": {
-                "var_log_t": {
-                  "dir": [
-                    "open",
-                    "read",
-                    "getattr",
-                    "lock",
-                    "search",
-                    "ioctl",
-                    "add_name",
-                    "remove_name",
-                    "write"
-                  ],
-                  "file": [
-                    "getattr",
-                    "read",
-                    "write",
-                    "append",
-                    "ioctl",
-                    "lock",
-                    "map",
-                    "open",
-                    "create"
-                  ],
-                  "sock_file": [
-                    "getattr",
-                    "read",
-                    "write",
-                    "append",
-                    "open"
-                  ]
-                }
-              },
-              "inherit": [
-                {
-                  "name": "container"
-                }
-              ]
-            }
-          }
-        ]
-      capabilities: Basic Install
-      categories: Security
-      features.operators.openshift.io/disconnected: "true"
-      features.operators.openshift.io/fips-compliant: "true"
-      features.operators.openshift.io/proxy-aware: "false"
-      features.operators.openshift.io/tls-profiles: "false"
-      features.operators.openshift.io/token-auth-aws: "false"
-      features.operators.openshift.io/token-auth-azure: "false"
-      features.operators.openshift.io/token-auth-gcp: "false"
-      olm.skipRange: '>=0.4.1 <0.8.4'
-      operatorframework.io/cluster-monitoring: "true"
-      operatorframework.io/suggested-namespace: security-profiles-operator
-      operators.openshift.io/valid-subscription: '["OpenShift Kubernetes Engine",
-        "OpenShift Container Platform", "OpenShift Platform Plus"]'
-      operators.operatorframework.io/builder: operator-sdk-v1.25.0
-      operators.operatorframework.io/project_layout: go.kubebuilder.io/v3
-    apiServiceDefinitions: {}
-    crdDescriptions:
-      owned:
-      - description: ProfileBinding is the Schema for the profilebindings API.
-        displayName: Profile Binding
-        kind: ProfileBinding
-        name: profilebindings.security-profiles-operator.x-k8s.io
-        version: v1alpha1
-      - description: ProfileRecording is the Schema for the profilerecordings API.
-        displayName: Profile Recording
-        kind: ProfileRecording
-        name: profilerecordings.security-profiles-operator.x-k8s.io
-        version: v1alpha1
-      - description: SeccompProfile is a cluster level specification for a seccomp
-          profile. See https://github.com/opencontainers/runtime-spec/blob/master/config-linux.md#seccomp
-        displayName: Seccomp Profile
-        kind: SeccompProfile
-        name: seccompprofiles.security-profiles-operator.x-k8s.io
-        version: v1beta1
-      - description: SecurityProfileNodeStatus is a per-node status of a security
-          profile
-        displayName: Security Profile Node Status
-        kind: SecurityProfileNodeStatus
-        name: securityprofilenodestatuses.security-profiles-operator.x-k8s.io
-        version: v1alpha1
-      - description: SecurityProfilesOperatorDaemon is the Schema to configure the
-          spod deployment.
-        displayName: Security Profiles Operator Daemon
-        kind: SecurityProfilesOperatorDaemon
-        name: securityprofilesoperatordaemons.security-profiles-operator.x-k8s.io
-        version: v1alpha1
-      - kind: RawSelinuxProfile
-        name: rawselinuxprofiles.security-profiles-operator.x-k8s.io
-        version: v1alpha2
-      - description: SelinuxProfile is the Schema for the selinuxprofiles API.
-        displayName: Selinux Profile
-        kind: SelinuxProfile
-        name: selinuxprofiles.security-profiles-operator.x-k8s.io
-        version: v1alpha2
-      - description: AppArmorProfile is a cluster level specification for an AppArmor
-          profile.
-        displayName: App Armor Profile
-        kind: AppArmorProfile
-        name: apparmorprofiles.security-profiles-operator.x-k8s.io
-        version: v1alpha1
-    description: SPO is an operator which aims to make it easier for users to use
-      SELinux, seccomp and AppArmor in Kubernetes clusters
-    displayName: Security Profiles Operator
-    installModes:
-    - supported: true
-      type: OwnNamespace
-    - supported: true
-      type: SingleNamespace
-    - supported: true
-      type: MultiNamespace
-    - supported: true
-      type: AllNamespaces
-    keywords:
-    - security
-    - selinux
-    - seccomp
-    - apparmor
-    - ebpf
-    labels:
-      operatorframework.io/arch.amd64: "true"
-    links:
-    - name: Security Profiles Operator
-      url: https://github.com/openshift/security-profiles-operator
-    maintainers:
-    - email: support@redhat.com
-      name: Red Hat support
-    maturity: alpha
-    provider:
-      name: Red Hat
-      url: https://www.redhat.com
+          ]
+        capabilities: Basic Install
+        categories: Security
+        features.operators.openshift.io/disconnected: "true"
+        features.operators.openshift.io/fips-compliant: "true"
+        features.operators.openshift.io/proxy-aware: "false"
+        features.operators.openshift.io/tls-profiles: "false"
+        features.operators.openshift.io/token-auth-aws: "false"
+        features.operators.openshift.io/token-auth-azure: "false"
+        features.operators.openshift.io/token-auth-gcp: "false"
+        olm.skipRange: '>=0.4.1 <0.8.4'
+        operatorframework.io/cluster-monitoring: "true"
+        operatorframework.io/suggested-namespace: security-profiles-operator
+        operators.openshift.io/valid-subscription: '["OpenShift Kubernetes Engine", "OpenShift Container Platform", "OpenShift Platform Plus"]'
+        operators.operatorframework.io/builder: operator-sdk-v1.25.0
+        operators.operatorframework.io/project_layout: go.kubebuilder.io/v3
+      apiServiceDefinitions: {}
+      crdDescriptions:
+        owned:
+          - description: ProfileBinding is the Schema for the profilebindings API.
+            displayName: Profile Binding
+            kind: ProfileBinding
+            name: profilebindings.security-profiles-operator.x-k8s.io
+            version: v1alpha1
+          - description: ProfileRecording is the Schema for the profilerecordings API.
+            displayName: Profile Recording
+            kind: ProfileRecording
+            name: profilerecordings.security-profiles-operator.x-k8s.io
+            version: v1alpha1
+          - description: SeccompProfile is a cluster level specification for a seccomp profile. See https://github.com/opencontainers/runtime-spec/blob/master/config-linux.md#seccomp
+            displayName: Seccomp Profile
+            kind: SeccompProfile
+            name: seccompprofiles.security-profiles-operator.x-k8s.io
+            version: v1beta1
+          - description: SecurityProfileNodeStatus is a per-node status of a security profile
+            displayName: Security Profile Node Status
+            kind: SecurityProfileNodeStatus
+            name: securityprofilenodestatuses.security-profiles-operator.x-k8s.io
+            version: v1alpha1
+          - description: SecurityProfilesOperatorDaemon is the Schema to configure the spod deployment.
+            displayName: Security Profiles Operator Daemon
+            kind: SecurityProfilesOperatorDaemon
+            name: securityprofilesoperatordaemons.security-profiles-operator.x-k8s.io
+            version: v1alpha1
+          - kind: RawSelinuxProfile
+            name: rawselinuxprofiles.security-profiles-operator.x-k8s.io
+            version: v1alpha2
+          - description: SelinuxProfile is the Schema for the selinuxprofiles API.
+            displayName: Selinux Profile
+            kind: SelinuxProfile
+            name: selinuxprofiles.security-profiles-operator.x-k8s.io
+            version: v1alpha2
+          - description: AppArmorProfile is a cluster level specification for an AppArmor profile.
+            displayName: App Armor Profile
+            kind: AppArmorProfile
+            name: apparmorprofiles.security-profiles-operator.x-k8s.io
+            version: v1alpha1
+      description: SPO is an operator which aims to make it easier for users to use SELinux, seccomp and AppArmor in Kubernetes clusters
+      displayName: Security Profiles Operator
+      installModes:
+        - supported: true
+          type: OwnNamespace
+        - supported: true
+          type: SingleNamespace
+        - supported: true
+          type: MultiNamespace
+        - supported: true
+          type: AllNamespaces
+      keywords:
+        - security
+        - selinux
+        - seccomp
+        - apparmor
+        - ebpf
+      labels:
+        operatorframework.io/arch.amd64: "true"
+      links:
+        - name: Security Profiles Operator
+          url: https://github.com/openshift/security-profiles-operator
+      maintainers:
+        - email: support@redhat.com
+          name: Red Hat support
+      maturity: alpha
+      provider:
+        name: Red Hat
+        url: https://www.redhat.com
 relatedImages:
-- image: registry.redhat.io/compliance/openshift-security-profiles-operator-bundle@sha256:beb3f94933d66193f0ce2f9904acde691281a7218aa7c007f2e2b69f9fd5c2d0
-  name: ""
-- image: registry.redhat.io/compliance/openshift-security-profiles-rhel8-operator@sha256:37ccaa8e4981bcfe6c84abc976187af1a3e465ce7c6d2a21f7a6c4c38d60aaea
-  name: security-profiles-operator
-- image: registry.redhat.io/compliance/openshift-selinuxd-rhel8@sha256:84224d242fef77fdd8d3bb57e2278bc5969f380ac5c582f10c938de61dc28f2b
-  name: selinuxd
-- image: registry.redhat.io/compliance/openshift-selinuxd-rhel8@sha256:84224d242fef77fdd8d3bb57e2278bc5969f380ac5c582f10c938de61dc28f2b
-  name: selinuxd_el8
-- image: registry.redhat.io/compliance/openshift-selinuxd-rhel9@sha256:1a769c96e4bfb8a2c096987c0c0c121a9b4f3a8bef5d8fecc84e6bc03673be90
-  name: selinuxd_el9
-- image: registry.redhat.io/openshift4/ose-kube-rbac-proxy@sha256:77df668a9591bbaae675d0553f8dca5423c0f257317bc08fe821d965f44ed019
-  name: rbac_proxy
+  - image: registry.redhat.io/compliance/openshift-security-profiles-operator-bundle@sha256:beb3f94933d66193f0ce2f9904acde691281a7218aa7c007f2e2b69f9fd5c2d0
+    name: ""
+  - image: registry.redhat.io/compliance/openshift-security-profiles-rhel8-operator@sha256:37ccaa8e4981bcfe6c84abc976187af1a3e465ce7c6d2a21f7a6c4c38d60aaea
+    name: security-profiles-operator
+  - image: registry.redhat.io/compliance/openshift-selinuxd-rhel8@sha256:84224d242fef77fdd8d3bb57e2278bc5969f380ac5c582f10c938de61dc28f2b
+    name: selinuxd
+  - image: registry.redhat.io/compliance/openshift-selinuxd-rhel8@sha256:84224d242fef77fdd8d3bb57e2278bc5969f380ac5c582f10c938de61dc28f2b
+    name: selinuxd_el8
+  - image: registry.redhat.io/compliance/openshift-selinuxd-rhel9@sha256:1a769c96e4bfb8a2c096987c0c0c121a9b4f3a8bef5d8fecc84e6bc03673be90
+    name: selinuxd_el9
+  - image: registry.redhat.io/openshift4/ose-kube-rbac-proxy@sha256:77df668a9591bbaae675d0553f8dca5423c0f257317bc08fe821d965f44ed019
+    name: rbac_proxy
 schema: olm.bundle
 ---
 image: registry.redhat.io/compliance/openshift-security-profiles-operator-bundle@sha256:7e24d269270f6dba6338c44235a81287fa8401391973bb89a903d29a8dcad7f0
 name: security-profiles-operator.v0.8.5
 package: security-profiles-operator
 properties:
-- type: olm.gvk
-  value:
-    group: security-profiles-operator.x-k8s.io
-    kind: AppArmorProfile
-    version: v1alpha1
-- type: olm.gvk
-  value:
-    group: security-profiles-operator.x-k8s.io
-    kind: ProfileBinding
-    version: v1alpha1
-- type: olm.gvk
-  value:
-    group: security-profiles-operator.x-k8s.io
-    kind: ProfileRecording
-    version: v1alpha1
-- type: olm.gvk
-  value:
-    group: security-profiles-operator.x-k8s.io
-    kind: RawSelinuxProfile
-    version: v1alpha2
-- type: olm.gvk
-  value:
-    group: security-profiles-operator.x-k8s.io
-    kind: SeccompProfile
-    version: v1beta1
-- type: olm.gvk
-  value:
-    group: security-profiles-operator.x-k8s.io
-    kind: SecurityProfileNodeStatus
-    version: v1alpha1
-- type: olm.gvk
-  value:
-    group: security-profiles-operator.x-k8s.io
-    kind: SecurityProfilesOperatorDaemon
-    version: v1alpha1
-- type: olm.gvk
-  value:
-    group: security-profiles-operator.x-k8s.io
-    kind: SelinuxProfile
-    version: v1alpha2
-- type: olm.package
-  value:
-    packageName: security-profiles-operator
-    version: 0.8.5
-- type: olm.csv.metadata
-  value:
-    annotations:
-      alm-examples: |-
-        [
-          {
-            "apiVersion": "security-profiles-operator.x-k8s.io/v1alpha1",
-            "kind": "AppArmorProfile",
-            "metadata": {
-              "annotations": {
-                "description": "Block writing to any files in the disk."
+  - type: olm.gvk
+    value:
+      group: security-profiles-operator.x-k8s.io
+      kind: AppArmorProfile
+      version: v1alpha1
+  - type: olm.gvk
+    value:
+      group: security-profiles-operator.x-k8s.io
+      kind: ProfileBinding
+      version: v1alpha1
+  - type: olm.gvk
+    value:
+      group: security-profiles-operator.x-k8s.io
+      kind: ProfileRecording
+      version: v1alpha1
+  - type: olm.gvk
+    value:
+      group: security-profiles-operator.x-k8s.io
+      kind: RawSelinuxProfile
+      version: v1alpha2
+  - type: olm.gvk
+    value:
+      group: security-profiles-operator.x-k8s.io
+      kind: SeccompProfile
+      version: v1beta1
+  - type: olm.gvk
+    value:
+      group: security-profiles-operator.x-k8s.io
+      kind: SecurityProfileNodeStatus
+      version: v1alpha1
+  - type: olm.gvk
+    value:
+      group: security-profiles-operator.x-k8s.io
+      kind: SecurityProfilesOperatorDaemon
+      version: v1alpha1
+  - type: olm.gvk
+    value:
+      group: security-profiles-operator.x-k8s.io
+      kind: SelinuxProfile
+      version: v1alpha2
+  - type: olm.package
+    value:
+      packageName: security-profiles-operator
+      version: 0.8.5
+  - type: olm.csv.metadata
+    value:
+      annotations:
+        alm-examples: |-
+          [
+            {
+              "apiVersion": "security-profiles-operator.x-k8s.io/v1alpha1",
+              "kind": "AppArmorProfile",
+              "metadata": {
+                "annotations": {
+                  "description": "Block writing to any files in the disk."
+                },
+                "name": "test-profile"
               },
-              "name": "test-profile"
+              "spec": {
+                "policy": "#include \u003ctunables/global\u003e\n\nprofile test-profile flags=(attach_disconnected) {\n  #include \u003cabstractions/base\u003e\n\n  file,\n\n  # Deny all file writes.\n  deny /** w,\n}\n"
+              }
             },
-            "spec": {
-              "policy": "#include \u003ctunables/global\u003e\n\nprofile test-profile flags=(attach_disconnected) {\n  #include \u003cabstractions/base\u003e\n\n  file,\n\n  # Deny all file writes.\n  deny /** w,\n}\n"
-            }
-          },
-          {
-            "apiVersion": "security-profiles-operator.x-k8s.io/v1alpha1",
-            "kind": "SecurityProfilesOperatorDaemon",
-            "metadata": {
-              "name": "spod",
-              "namespace": "security-profiles-operator"
-            },
-            "spec": {
-              "enableAppArmor": false,
-              "enableLogEnricher": false,
-              "enableSelinux": false
-            }
-          },
-          {
-            "apiVersion": "security-profiles-operator.x-k8s.io/v1alpha1",
-            "kind": "ProfileRecording",
-            "metadata": {
-              "name": "test-recording"
-            },
-            "spec": {
-              "kind": "SeccompProfile",
-              "podSelector": {
-                "matchLabels": {
-                  "app": "alpine"
-                }
+            {
+              "apiVersion": "security-profiles-operator.x-k8s.io/v1alpha1",
+              "kind": "SecurityProfilesOperatorDaemon",
+              "metadata": {
+                "name": "spod",
+                "namespace": "security-profiles-operator"
               },
-              "recorder": "bpf"
-            }
-          },
-          {
-            "apiVersion": "security-profiles-operator.x-k8s.io/v1alpha1",
-            "kind": "ProfileBinding",
-            "metadata": {
-              "name": "profile-binding"
+              "spec": {
+                "enableAppArmor": false,
+                "enableLogEnricher": false,
+                "enableSelinux": false
+              }
             },
-            "spec": {
-              "image": "nginx:1.19.1",
-              "profileRef": {
+            {
+              "apiVersion": "security-profiles-operator.x-k8s.io/v1alpha1",
+              "kind": "ProfileRecording",
+              "metadata": {
+                "name": "test-recording"
+              },
+              "spec": {
                 "kind": "SeccompProfile",
+                "podSelector": {
+                  "matchLabels": {
+                    "app": "alpine"
+                  }
+                },
+                "recorder": "bpf"
+              }
+            },
+            {
+              "apiVersion": "security-profiles-operator.x-k8s.io/v1alpha1",
+              "kind": "ProfileBinding",
+              "metadata": {
+                "name": "profile-binding"
+              },
+              "spec": {
+                "image": "nginx:1.19.1",
+                "profileRef": {
+                  "kind": "SeccompProfile",
+                  "name": "profile-allow-unsafe"
+                }
+              }
+            },
+            {
+              "apiVersion": "security-profiles-operator.x-k8s.io/v1alpha2",
+              "kind": "RawSelinuxProfile",
+              "metadata": {
+                "name": "errorlogger"
+              },
+              "spec": {
+                "policy": "(blockinherit container)\n(allow process var_log_t ( dir ( open read getattr lock search ioctl add_name remove_name write ))) \n(allow process var_log_t ( file ( getattr read write append ioctl lock map open create  ))) \n(allow process var_log_t ( sock_file ( getattr read write append open  ))) \n"
+              }
+            },
+            {
+              "apiVersion": "security-profiles-operator.x-k8s.io/v1beta1",
+              "kind": "SeccompProfile",
+              "metadata": {
+                "annotations": {
+                  "description": "Blocks all syscalls."
+                },
+                "name": "profile-block-all"
+              },
+              "spec": {
+                "defaultAction": "SCMP_ACT_ERRNO"
+              }
+            },
+            {
+              "apiVersion": "security-profiles-operator.x-k8s.io/v1beta1",
+              "kind": "SeccompProfile",
+              "metadata": {
+                "annotations": {
+                  "description": "UNSAFE: Allows all syscalls whilst logging their use. Similar to running as unconfined in terms of enforcement."
+                },
+                "name": "profile-complain-unsafe"
+              },
+              "spec": {
+                "defaultAction": "SCMP_ACT_LOG"
+              }
+            },
+            {
+              "apiVersion": "security-profiles-operator.x-k8s.io/v1beta1",
+              "kind": "SeccompProfile",
+              "metadata": {
+                "annotations": {
+                  "description": "UNSAFE: Allows all syscalls. Similar to running as unconfined as it provides no enforcement."
+                },
                 "name": "profile-allow-unsafe"
+              },
+              "spec": {
+                "defaultAction": "SCMP_ACT_ALLOW"
+              }
+            },
+            {
+              "apiVersion": "security-profiles-operator.x-k8s.io/v1beta1",
+              "kind": "SeccompProfile",
+              "metadata": {
+                "annotations": {
+                  "description": "Enables complain mode whilst blocking high-risk syscalls. Some essential syscalls are allowed to decrease log noise."
+                },
+                "name": "profile-complain-block-high-risk"
+              },
+              "spec": {
+                "architectures": [
+                  "SCMP_ARCH_X86_64"
+                ],
+                "defaultAction": "SCMP_ACT_LOG",
+                "syscalls": [
+                  {
+                    "action": "SCMP_ACT_ALLOW",
+                    "names": [
+                      "exit",
+                      "exit_group",
+                      "futex",
+                      "nanosleep"
+                    ]
+                  },
+                  {
+                    "action": "SCMP_ACT_ERRNO",
+                    "names": [
+                      "acct",
+                      "add_key",
+                      "bpf",
+                      "clock_adjtime",
+                      "clock_settime",
+                      "create_module",
+                      "delete_module",
+                      "finit_module",
+                      "get_kernel_syms",
+                      "get_mempolicy",
+                      "init_module",
+                      "ioperm",
+                      "iopl",
+                      "kcmp",
+                      "kexec_file_load",
+                      "kexec_load",
+                      "keyctl",
+                      "lookup_dcookie",
+                      "mbind",
+                      "mount",
+                      "move_pages",
+                      "name_to_handle_at",
+                      "nfsservctl",
+                      "open_by_handle_at",
+                      "perf_event_open",
+                      "personality",
+                      "pivot_root",
+                      "process_vm_readv",
+                      "process_vm_writev",
+                      "ptrace",
+                      "query_module",
+                      "quotactl",
+                      "reboot",
+                      "request_key",
+                      "set_mempolicy",
+                      "setns",
+                      "settimeofday",
+                      "stime",
+                      "swapoff",
+                      "swapon",
+                      "_sysctl",
+                      "sysfs",
+                      "umount2",
+                      "umount",
+                      "unshare",
+                      "uselib",
+                      "userfaultfd",
+                      "ustat",
+                      "vm86old",
+                      "vm86"
+                    ]
+                  }
+                ]
+              }
+            },
+            {
+              "apiVersion": "security-profiles-operator.x-k8s.io/v1alpha2",
+              "kind": "SelinuxProfile",
+              "metadata": {
+                "name": "errorlogger"
+              },
+              "spec": {
+                "allow": {
+                  "var_log_t": {
+                    "dir": [
+                      "open",
+                      "read",
+                      "getattr",
+                      "lock",
+                      "search",
+                      "ioctl",
+                      "add_name",
+                      "remove_name",
+                      "write"
+                    ],
+                    "file": [
+                      "getattr",
+                      "read",
+                      "write",
+                      "append",
+                      "ioctl",
+                      "lock",
+                      "map",
+                      "open",
+                      "create"
+                    ],
+                    "sock_file": [
+                      "getattr",
+                      "read",
+                      "write",
+                      "append",
+                      "open"
+                    ]
+                  }
+                },
+                "inherit": [
+                  {
+                    "name": "container"
+                  }
+                ]
               }
             }
-          },
-          {
-            "apiVersion": "security-profiles-operator.x-k8s.io/v1alpha2",
-            "kind": "RawSelinuxProfile",
-            "metadata": {
-              "name": "errorlogger"
-            },
-            "spec": {
-              "policy": "(blockinherit container)\n(allow process var_log_t ( dir ( open read getattr lock search ioctl add_name remove_name write ))) \n(allow process var_log_t ( file ( getattr read write append ioctl lock map open create  ))) \n(allow process var_log_t ( sock_file ( getattr read write append open  ))) \n"
-            }
-          },
-          {
-            "apiVersion": "security-profiles-operator.x-k8s.io/v1beta1",
-            "kind": "SeccompProfile",
-            "metadata": {
-              "annotations": {
-                "description": "Blocks all syscalls."
-              },
-              "name": "profile-block-all"
-            },
-            "spec": {
-              "defaultAction": "SCMP_ACT_ERRNO"
-            }
-          },
-          {
-            "apiVersion": "security-profiles-operator.x-k8s.io/v1beta1",
-            "kind": "SeccompProfile",
-            "metadata": {
-              "annotations": {
-                "description": "UNSAFE: Allows all syscalls whilst logging their use. Similar to running as unconfined in terms of enforcement."
-              },
-              "name": "profile-complain-unsafe"
-            },
-            "spec": {
-              "defaultAction": "SCMP_ACT_LOG"
-            }
-          },
-          {
-            "apiVersion": "security-profiles-operator.x-k8s.io/v1beta1",
-            "kind": "SeccompProfile",
-            "metadata": {
-              "annotations": {
-                "description": "UNSAFE: Allows all syscalls. Similar to running as unconfined as it provides no enforcement."
-              },
-              "name": "profile-allow-unsafe"
-            },
-            "spec": {
-              "defaultAction": "SCMP_ACT_ALLOW"
-            }
-          },
-          {
-            "apiVersion": "security-profiles-operator.x-k8s.io/v1beta1",
-            "kind": "SeccompProfile",
-            "metadata": {
-              "annotations": {
-                "description": "Enables complain mode whilst blocking high-risk syscalls. Some essential syscalls are allowed to decrease log noise."
-              },
-              "name": "profile-complain-block-high-risk"
-            },
-            "spec": {
-              "architectures": [
-                "SCMP_ARCH_X86_64"
-              ],
-              "defaultAction": "SCMP_ACT_LOG",
-              "syscalls": [
-                {
-                  "action": "SCMP_ACT_ALLOW",
-                  "names": [
-                    "exit",
-                    "exit_group",
-                    "futex",
-                    "nanosleep"
-                  ]
-                },
-                {
-                  "action": "SCMP_ACT_ERRNO",
-                  "names": [
-                    "acct",
-                    "add_key",
-                    "bpf",
-                    "clock_adjtime",
-                    "clock_settime",
-                    "create_module",
-                    "delete_module",
-                    "finit_module",
-                    "get_kernel_syms",
-                    "get_mempolicy",
-                    "init_module",
-                    "ioperm",
-                    "iopl",
-                    "kcmp",
-                    "kexec_file_load",
-                    "kexec_load",
-                    "keyctl",
-                    "lookup_dcookie",
-                    "mbind",
-                    "mount",
-                    "move_pages",
-                    "name_to_handle_at",
-                    "nfsservctl",
-                    "open_by_handle_at",
-                    "perf_event_open",
-                    "personality",
-                    "pivot_root",
-                    "process_vm_readv",
-                    "process_vm_writev",
-                    "ptrace",
-                    "query_module",
-                    "quotactl",
-                    "reboot",
-                    "request_key",
-                    "set_mempolicy",
-                    "setns",
-                    "settimeofday",
-                    "stime",
-                    "swapoff",
-                    "swapon",
-                    "_sysctl",
-                    "sysfs",
-                    "umount2",
-                    "umount",
-                    "unshare",
-                    "uselib",
-                    "userfaultfd",
-                    "ustat",
-                    "vm86old",
-                    "vm86"
-                  ]
-                }
-              ]
-            }
-          },
-          {
-            "apiVersion": "security-profiles-operator.x-k8s.io/v1alpha2",
-            "kind": "SelinuxProfile",
-            "metadata": {
-              "name": "errorlogger"
-            },
-            "spec": {
-              "allow": {
-                "var_log_t": {
-                  "dir": [
-                    "open",
-                    "read",
-                    "getattr",
-                    "lock",
-                    "search",
-                    "ioctl",
-                    "add_name",
-                    "remove_name",
-                    "write"
-                  ],
-                  "file": [
-                    "getattr",
-                    "read",
-                    "write",
-                    "append",
-                    "ioctl",
-                    "lock",
-                    "map",
-                    "open",
-                    "create"
-                  ],
-                  "sock_file": [
-                    "getattr",
-                    "read",
-                    "write",
-                    "append",
-                    "open"
-                  ]
-                }
-              },
-              "inherit": [
-                {
-                  "name": "container"
-                }
-              ]
-            }
-          }
-        ]
-      capabilities: Basic Install
-      categories: Security
-      features.operators.openshift.io/disconnected: "true"
-      features.operators.openshift.io/fips-compliant: "true"
-      features.operators.openshift.io/proxy-aware: "false"
-      features.operators.openshift.io/tls-profiles: "false"
-      features.operators.openshift.io/token-auth-aws: "false"
-      features.operators.openshift.io/token-auth-azure: "false"
-      features.operators.openshift.io/token-auth-gcp: "false"
-      olm.skipRange: '>=0.4.1 <0.8.5'
-      operatorframework.io/cluster-monitoring: "true"
-      operatorframework.io/suggested-namespace: openshift-security-profiles
-      operators.openshift.io/valid-subscription: '["OpenShift Kubernetes Engine",
-        "OpenShift Container Platform", "OpenShift Platform Plus"]'
-      operators.operatorframework.io/builder: operator-sdk-v1.25.0
-      operators.operatorframework.io/project_layout: go.kubebuilder.io/v3
-    apiServiceDefinitions: {}
-    crdDescriptions:
-      owned:
-      - description: ProfileBinding is the Schema for the profilebindings API.
-        displayName: Profile Binding
-        kind: ProfileBinding
-        name: profilebindings.security-profiles-operator.x-k8s.io
-        version: v1alpha1
-      - description: ProfileRecording is the Schema for the profilerecordings API.
-        displayName: Profile Recording
-        kind: ProfileRecording
-        name: profilerecordings.security-profiles-operator.x-k8s.io
-        version: v1alpha1
-      - description: SeccompProfile is a cluster level specification for a seccomp
-          profile. See https://github.com/opencontainers/runtime-spec/blob/master/config-linux.md#seccomp
-        displayName: Seccomp Profile
-        kind: SeccompProfile
-        name: seccompprofiles.security-profiles-operator.x-k8s.io
-        version: v1beta1
-      - description: SecurityProfileNodeStatus is a per-node status of a security
-          profile
-        displayName: Security Profile Node Status
-        kind: SecurityProfileNodeStatus
-        name: securityprofilenodestatuses.security-profiles-operator.x-k8s.io
-        version: v1alpha1
-      - description: SecurityProfilesOperatorDaemon is the Schema to configure the
-          spod deployment.
-        displayName: Security Profiles Operator Daemon
-        kind: SecurityProfilesOperatorDaemon
-        name: securityprofilesoperatordaemons.security-profiles-operator.x-k8s.io
-        version: v1alpha1
-      - kind: RawSelinuxProfile
-        name: rawselinuxprofiles.security-profiles-operator.x-k8s.io
-        version: v1alpha2
-      - description: SelinuxProfile is the Schema for the selinuxprofiles API.
-        displayName: Selinux Profile
-        kind: SelinuxProfile
-        name: selinuxprofiles.security-profiles-operator.x-k8s.io
-        version: v1alpha2
-      - description: AppArmorProfile is a cluster level specification for an AppArmor
-          profile.
-        displayName: App Armor Profile
-        kind: AppArmorProfile
-        name: apparmorprofiles.security-profiles-operator.x-k8s.io
-        version: v1alpha1
-    description: SPO is an operator which aims to make it easier for users to use
-      SELinux, seccomp and AppArmor in Kubernetes clusters
-    displayName: Security Profiles Operator
-    installModes:
-    - supported: true
-      type: OwnNamespace
-    - supported: true
-      type: SingleNamespace
-    - supported: true
-      type: MultiNamespace
-    - supported: true
-      type: AllNamespaces
-    keywords:
-    - security
-    - selinux
-    - seccomp
-    - apparmor
-    - ebpf
-    labels:
-      operatorframework.io/arch.amd64: supported
-    links:
-    - name: Security Profiles Operator
-      url: https://github.com/openshift/security-profiles-operator
-    maintainers:
-    - email: support@redhat.com
-      name: Red Hat support
-    maturity: alpha
-    provider:
-      name: Red Hat
-      url: https://www.redhat.com
+          ]
+        capabilities: Basic Install
+        categories: Security
+        features.operators.openshift.io/disconnected: "true"
+        features.operators.openshift.io/fips-compliant: "true"
+        features.operators.openshift.io/proxy-aware: "false"
+        features.operators.openshift.io/tls-profiles: "false"
+        features.operators.openshift.io/token-auth-aws: "false"
+        features.operators.openshift.io/token-auth-azure: "false"
+        features.operators.openshift.io/token-auth-gcp: "false"
+        olm.skipRange: '>=0.4.1 <0.8.5'
+        operatorframework.io/cluster-monitoring: "true"
+        operatorframework.io/suggested-namespace: openshift-security-profiles
+        operators.openshift.io/valid-subscription: '["OpenShift Kubernetes Engine", "OpenShift Container Platform", "OpenShift Platform Plus"]'
+        operators.operatorframework.io/builder: operator-sdk-v1.25.0
+        operators.operatorframework.io/project_layout: go.kubebuilder.io/v3
+      apiServiceDefinitions: {}
+      crdDescriptions:
+        owned:
+          - description: ProfileBinding is the Schema for the profilebindings API.
+            displayName: Profile Binding
+            kind: ProfileBinding
+            name: profilebindings.security-profiles-operator.x-k8s.io
+            version: v1alpha1
+          - description: ProfileRecording is the Schema for the profilerecordings API.
+            displayName: Profile Recording
+            kind: ProfileRecording
+            name: profilerecordings.security-profiles-operator.x-k8s.io
+            version: v1alpha1
+          - description: SeccompProfile is a cluster level specification for a seccomp profile. See https://github.com/opencontainers/runtime-spec/blob/master/config-linux.md#seccomp
+            displayName: Seccomp Profile
+            kind: SeccompProfile
+            name: seccompprofiles.security-profiles-operator.x-k8s.io
+            version: v1beta1
+          - description: SecurityProfileNodeStatus is a per-node status of a security profile
+            displayName: Security Profile Node Status
+            kind: SecurityProfileNodeStatus
+            name: securityprofilenodestatuses.security-profiles-operator.x-k8s.io
+            version: v1alpha1
+          - description: SecurityProfilesOperatorDaemon is the Schema to configure the spod deployment.
+            displayName: Security Profiles Operator Daemon
+            kind: SecurityProfilesOperatorDaemon
+            name: securityprofilesoperatordaemons.security-profiles-operator.x-k8s.io
+            version: v1alpha1
+          - kind: RawSelinuxProfile
+            name: rawselinuxprofiles.security-profiles-operator.x-k8s.io
+            version: v1alpha2
+          - description: SelinuxProfile is the Schema for the selinuxprofiles API.
+            displayName: Selinux Profile
+            kind: SelinuxProfile
+            name: selinuxprofiles.security-profiles-operator.x-k8s.io
+            version: v1alpha2
+          - description: AppArmorProfile is a cluster level specification for an AppArmor profile.
+            displayName: App Armor Profile
+            kind: AppArmorProfile
+            name: apparmorprofiles.security-profiles-operator.x-k8s.io
+            version: v1alpha1
+      description: SPO is an operator which aims to make it easier for users to use SELinux, seccomp and AppArmor in Kubernetes clusters
+      displayName: Security Profiles Operator
+      installModes:
+        - supported: true
+          type: OwnNamespace
+        - supported: true
+          type: SingleNamespace
+        - supported: true
+          type: MultiNamespace
+        - supported: true
+          type: AllNamespaces
+      keywords:
+        - security
+        - selinux
+        - seccomp
+        - apparmor
+        - ebpf
+      labels:
+        operatorframework.io/arch.amd64: supported
+      links:
+        - name: Security Profiles Operator
+          url: https://github.com/openshift/security-profiles-operator
+      maintainers:
+        - email: support@redhat.com
+          name: Red Hat support
+      maturity: alpha
+      provider:
+        name: Red Hat
+        url: https://www.redhat.com
 relatedImages:
-- image: registry.redhat.io/compliance/openshift-security-profiles-operator-bundle@sha256:7e24d269270f6dba6338c44235a81287fa8401391973bb89a903d29a8dcad7f0
-  name: ""
-- image: registry.redhat.io/compliance/openshift-security-profiles-rhel8-operator@sha256:82e716bc5470237bc6f966d66664267e72005a05e16b4bd1c937d37755f6ccc8
-  name: security-profiles-operator
-- image: registry.redhat.io/compliance/openshift-selinuxd-rhel8@sha256:b9b953c03468ce9fa55e99383fed2d3df658007d2619fbede80d5d717961c133
-  name: selinuxd
-- image: registry.redhat.io/compliance/openshift-selinuxd-rhel8@sha256:b9b953c03468ce9fa55e99383fed2d3df658007d2619fbede80d5d717961c133
-  name: selinuxd_el8
-- image: registry.redhat.io/compliance/openshift-selinuxd-rhel9@sha256:626d6ff244eea3dfb6cc1b4ef8f35b1fa591ef54062e5a8c75531167c0751fa2
-  name: selinuxd_el9
-- image: registry.redhat.io/openshift4/ose-kube-rbac-proxy@sha256:77df668a9591bbaae675d0553f8dca5423c0f257317bc08fe821d965f44ed019
-  name: rbac_proxy
+  - image: registry.redhat.io/compliance/openshift-security-profiles-operator-bundle@sha256:7e24d269270f6dba6338c44235a81287fa8401391973bb89a903d29a8dcad7f0
+    name: ""
+  - image: registry.redhat.io/compliance/openshift-security-profiles-rhel8-operator@sha256:82e716bc5470237bc6f966d66664267e72005a05e16b4bd1c937d37755f6ccc8
+    name: security-profiles-operator
+  - image: registry.redhat.io/compliance/openshift-selinuxd-rhel8@sha256:b9b953c03468ce9fa55e99383fed2d3df658007d2619fbede80d5d717961c133
+    name: selinuxd
+  - image: registry.redhat.io/compliance/openshift-selinuxd-rhel8@sha256:b9b953c03468ce9fa55e99383fed2d3df658007d2619fbede80d5d717961c133
+    name: selinuxd_el8
+  - image: registry.redhat.io/compliance/openshift-selinuxd-rhel9@sha256:626d6ff244eea3dfb6cc1b4ef8f35b1fa591ef54062e5a8c75531167c0751fa2
+    name: selinuxd_el9
+  - image: registry.redhat.io/openshift4/ose-kube-rbac-proxy@sha256:77df668a9591bbaae675d0553f8dca5423c0f257317bc08fe821d965f44ed019
+    name: rbac_proxy
 schema: olm.bundle
 ---
 image: registry.redhat.io/compliance/openshift-security-profiles-operator-bundle@sha256:52310e20ac08d19c147554e78b9ed4a31e2ae349403c6b8b2fc744ce996a8246
 name: security-profiles-operator.v0.8.6
 package: security-profiles-operator
 properties:
-- type: olm.gvk
-  value:
-    group: security-profiles-operator.x-k8s.io
-    kind: AppArmorProfile
-    version: v1alpha1
-- type: olm.gvk
-  value:
-    group: security-profiles-operator.x-k8s.io
-    kind: ProfileBinding
-    version: v1alpha1
-- type: olm.gvk
-  value:
-    group: security-profiles-operator.x-k8s.io
-    kind: ProfileRecording
-    version: v1alpha1
-- type: olm.gvk
-  value:
-    group: security-profiles-operator.x-k8s.io
-    kind: RawSelinuxProfile
-    version: v1alpha2
-- type: olm.gvk
-  value:
-    group: security-profiles-operator.x-k8s.io
-    kind: SeccompProfile
-    version: v1beta1
-- type: olm.gvk
-  value:
-    group: security-profiles-operator.x-k8s.io
-    kind: SecurityProfileNodeStatus
-    version: v1alpha1
-- type: olm.gvk
-  value:
-    group: security-profiles-operator.x-k8s.io
-    kind: SecurityProfilesOperatorDaemon
-    version: v1alpha1
-- type: olm.gvk
-  value:
-    group: security-profiles-operator.x-k8s.io
-    kind: SelinuxProfile
-    version: v1alpha2
-- type: olm.package
-  value:
-    packageName: security-profiles-operator
-    version: 0.8.6
-- type: olm.csv.metadata
-  value:
-    annotations:
-      alm-examples: |-
-        [
-          {
-            "apiVersion": "security-profiles-operator.x-k8s.io/v1alpha1",
-            "kind": "AppArmorProfile",
-            "metadata": {
-              "annotations": {
-                "description": "Block writing to any files in the disk."
+  - type: olm.gvk
+    value:
+      group: security-profiles-operator.x-k8s.io
+      kind: AppArmorProfile
+      version: v1alpha1
+  - type: olm.gvk
+    value:
+      group: security-profiles-operator.x-k8s.io
+      kind: ProfileBinding
+      version: v1alpha1
+  - type: olm.gvk
+    value:
+      group: security-profiles-operator.x-k8s.io
+      kind: ProfileRecording
+      version: v1alpha1
+  - type: olm.gvk
+    value:
+      group: security-profiles-operator.x-k8s.io
+      kind: RawSelinuxProfile
+      version: v1alpha2
+  - type: olm.gvk
+    value:
+      group: security-profiles-operator.x-k8s.io
+      kind: SeccompProfile
+      version: v1beta1
+  - type: olm.gvk
+    value:
+      group: security-profiles-operator.x-k8s.io
+      kind: SecurityProfileNodeStatus
+      version: v1alpha1
+  - type: olm.gvk
+    value:
+      group: security-profiles-operator.x-k8s.io
+      kind: SecurityProfilesOperatorDaemon
+      version: v1alpha1
+  - type: olm.gvk
+    value:
+      group: security-profiles-operator.x-k8s.io
+      kind: SelinuxProfile
+      version: v1alpha2
+  - type: olm.package
+    value:
+      packageName: security-profiles-operator
+      version: 0.8.6
+  - type: olm.csv.metadata
+    value:
+      annotations:
+        alm-examples: |-
+          [
+            {
+              "apiVersion": "security-profiles-operator.x-k8s.io/v1alpha1",
+              "kind": "AppArmorProfile",
+              "metadata": {
+                "annotations": {
+                  "description": "Block writing to any files in the disk."
+                },
+                "name": "test-profile"
               },
-              "name": "test-profile"
+              "spec": {
+                "policy": "#include \u003ctunables/global\u003e\n\nprofile test-profile flags=(attach_disconnected) {\n  #include \u003cabstractions/base\u003e\n\n  file,\n\n  # Deny all file writes.\n  deny /** w,\n}\n"
+              }
             },
-            "spec": {
-              "policy": "#include \u003ctunables/global\u003e\n\nprofile test-profile flags=(attach_disconnected) {\n  #include \u003cabstractions/base\u003e\n\n  file,\n\n  # Deny all file writes.\n  deny /** w,\n}\n"
-            }
-          },
-          {
-            "apiVersion": "security-profiles-operator.x-k8s.io/v1alpha1",
-            "kind": "SecurityProfilesOperatorDaemon",
-            "metadata": {
-              "name": "spod",
-              "namespace": "security-profiles-operator"
-            },
-            "spec": {
-              "enableAppArmor": false,
-              "enableLogEnricher": false,
-              "enableSelinux": false
-            }
-          },
-          {
-            "apiVersion": "security-profiles-operator.x-k8s.io/v1alpha1",
-            "kind": "ProfileRecording",
-            "metadata": {
-              "name": "test-recording"
-            },
-            "spec": {
-              "kind": "SeccompProfile",
-              "podSelector": {
-                "matchLabels": {
-                  "app": "alpine"
-                }
+            {
+              "apiVersion": "security-profiles-operator.x-k8s.io/v1alpha1",
+              "kind": "SecurityProfilesOperatorDaemon",
+              "metadata": {
+                "name": "spod",
+                "namespace": "security-profiles-operator"
               },
-              "recorder": "bpf"
-            }
-          },
-          {
-            "apiVersion": "security-profiles-operator.x-k8s.io/v1alpha1",
-            "kind": "ProfileBinding",
-            "metadata": {
-              "name": "profile-binding"
+              "spec": {
+                "enableAppArmor": false,
+                "enableLogEnricher": false,
+                "enableSelinux": false
+              }
             },
-            "spec": {
-              "image": "nginx:1.19.1",
-              "profileRef": {
+            {
+              "apiVersion": "security-profiles-operator.x-k8s.io/v1alpha1",
+              "kind": "ProfileRecording",
+              "metadata": {
+                "name": "test-recording"
+              },
+              "spec": {
                 "kind": "SeccompProfile",
+                "podSelector": {
+                  "matchLabels": {
+                    "app": "alpine"
+                  }
+                },
+                "recorder": "bpf"
+              }
+            },
+            {
+              "apiVersion": "security-profiles-operator.x-k8s.io/v1alpha1",
+              "kind": "ProfileBinding",
+              "metadata": {
+                "name": "profile-binding"
+              },
+              "spec": {
+                "image": "nginx:1.19.1",
+                "profileRef": {
+                  "kind": "SeccompProfile",
+                  "name": "profile-allow-unsafe"
+                }
+              }
+            },
+            {
+              "apiVersion": "security-profiles-operator.x-k8s.io/v1alpha2",
+              "kind": "RawSelinuxProfile",
+              "metadata": {
+                "name": "errorlogger"
+              },
+              "spec": {
+                "policy": "(blockinherit container)\n(allow process var_log_t ( dir ( open read getattr lock search ioctl add_name remove_name write ))) \n(allow process var_log_t ( file ( getattr read write append ioctl lock map open create  ))) \n(allow process var_log_t ( sock_file ( getattr read write append open  ))) \n"
+              }
+            },
+            {
+              "apiVersion": "security-profiles-operator.x-k8s.io/v1beta1",
+              "kind": "SeccompProfile",
+              "metadata": {
+                "annotations": {
+                  "description": "Blocks all syscalls."
+                },
+                "name": "profile-block-all"
+              },
+              "spec": {
+                "defaultAction": "SCMP_ACT_ERRNO"
+              }
+            },
+            {
+              "apiVersion": "security-profiles-operator.x-k8s.io/v1beta1",
+              "kind": "SeccompProfile",
+              "metadata": {
+                "annotations": {
+                  "description": "UNSAFE: Allows all syscalls whilst logging their use. Similar to running as unconfined in terms of enforcement."
+                },
+                "name": "profile-complain-unsafe"
+              },
+              "spec": {
+                "defaultAction": "SCMP_ACT_LOG"
+              }
+            },
+            {
+              "apiVersion": "security-profiles-operator.x-k8s.io/v1beta1",
+              "kind": "SeccompProfile",
+              "metadata": {
+                "annotations": {
+                  "description": "UNSAFE: Allows all syscalls. Similar to running as unconfined as it provides no enforcement."
+                },
                 "name": "profile-allow-unsafe"
+              },
+              "spec": {
+                "defaultAction": "SCMP_ACT_ALLOW"
+              }
+            },
+            {
+              "apiVersion": "security-profiles-operator.x-k8s.io/v1beta1",
+              "kind": "SeccompProfile",
+              "metadata": {
+                "annotations": {
+                  "description": "Enables complain mode whilst blocking high-risk syscalls. Some essential syscalls are allowed to decrease log noise."
+                },
+                "name": "profile-complain-block-high-risk"
+              },
+              "spec": {
+                "architectures": [
+                  "SCMP_ARCH_X86_64"
+                ],
+                "defaultAction": "SCMP_ACT_LOG",
+                "syscalls": [
+                  {
+                    "action": "SCMP_ACT_ALLOW",
+                    "names": [
+                      "exit",
+                      "exit_group",
+                      "futex",
+                      "nanosleep"
+                    ]
+                  },
+                  {
+                    "action": "SCMP_ACT_ERRNO",
+                    "names": [
+                      "acct",
+                      "add_key",
+                      "bpf",
+                      "clock_adjtime",
+                      "clock_settime",
+                      "create_module",
+                      "delete_module",
+                      "finit_module",
+                      "get_kernel_syms",
+                      "get_mempolicy",
+                      "init_module",
+                      "ioperm",
+                      "iopl",
+                      "kcmp",
+                      "kexec_file_load",
+                      "kexec_load",
+                      "keyctl",
+                      "lookup_dcookie",
+                      "mbind",
+                      "mount",
+                      "move_pages",
+                      "name_to_handle_at",
+                      "nfsservctl",
+                      "open_by_handle_at",
+                      "perf_event_open",
+                      "personality",
+                      "pivot_root",
+                      "process_vm_readv",
+                      "process_vm_writev",
+                      "ptrace",
+                      "query_module",
+                      "quotactl",
+                      "reboot",
+                      "request_key",
+                      "set_mempolicy",
+                      "setns",
+                      "settimeofday",
+                      "stime",
+                      "swapoff",
+                      "swapon",
+                      "_sysctl",
+                      "sysfs",
+                      "umount2",
+                      "umount",
+                      "unshare",
+                      "uselib",
+                      "userfaultfd",
+                      "ustat",
+                      "vm86old",
+                      "vm86"
+                    ]
+                  }
+                ]
+              }
+            },
+            {
+              "apiVersion": "security-profiles-operator.x-k8s.io/v1alpha2",
+              "kind": "SelinuxProfile",
+              "metadata": {
+                "name": "errorlogger"
+              },
+              "spec": {
+                "allow": {
+                  "var_log_t": {
+                    "dir": [
+                      "open",
+                      "read",
+                      "getattr",
+                      "lock",
+                      "search",
+                      "ioctl",
+                      "add_name",
+                      "remove_name",
+                      "write"
+                    ],
+                    "file": [
+                      "getattr",
+                      "read",
+                      "write",
+                      "append",
+                      "ioctl",
+                      "lock",
+                      "map",
+                      "open",
+                      "create"
+                    ],
+                    "sock_file": [
+                      "getattr",
+                      "read",
+                      "write",
+                      "append",
+                      "open"
+                    ]
+                  }
+                },
+                "inherit": [
+                  {
+                    "name": "container"
+                  }
+                ]
               }
             }
-          },
-          {
-            "apiVersion": "security-profiles-operator.x-k8s.io/v1alpha2",
-            "kind": "RawSelinuxProfile",
-            "metadata": {
-              "name": "errorlogger"
-            },
-            "spec": {
-              "policy": "(blockinherit container)\n(allow process var_log_t ( dir ( open read getattr lock search ioctl add_name remove_name write ))) \n(allow process var_log_t ( file ( getattr read write append ioctl lock map open create  ))) \n(allow process var_log_t ( sock_file ( getattr read write append open  ))) \n"
-            }
-          },
-          {
-            "apiVersion": "security-profiles-operator.x-k8s.io/v1beta1",
-            "kind": "SeccompProfile",
-            "metadata": {
-              "annotations": {
-                "description": "Blocks all syscalls."
-              },
-              "name": "profile-block-all"
-            },
-            "spec": {
-              "defaultAction": "SCMP_ACT_ERRNO"
-            }
-          },
-          {
-            "apiVersion": "security-profiles-operator.x-k8s.io/v1beta1",
-            "kind": "SeccompProfile",
-            "metadata": {
-              "annotations": {
-                "description": "UNSAFE: Allows all syscalls whilst logging their use. Similar to running as unconfined in terms of enforcement."
-              },
-              "name": "profile-complain-unsafe"
-            },
-            "spec": {
-              "defaultAction": "SCMP_ACT_LOG"
-            }
-          },
-          {
-            "apiVersion": "security-profiles-operator.x-k8s.io/v1beta1",
-            "kind": "SeccompProfile",
-            "metadata": {
-              "annotations": {
-                "description": "UNSAFE: Allows all syscalls. Similar to running as unconfined as it provides no enforcement."
-              },
-              "name": "profile-allow-unsafe"
-            },
-            "spec": {
-              "defaultAction": "SCMP_ACT_ALLOW"
-            }
-          },
-          {
-            "apiVersion": "security-profiles-operator.x-k8s.io/v1beta1",
-            "kind": "SeccompProfile",
-            "metadata": {
-              "annotations": {
-                "description": "Enables complain mode whilst blocking high-risk syscalls. Some essential syscalls are allowed to decrease log noise."
-              },
-              "name": "profile-complain-block-high-risk"
-            },
-            "spec": {
-              "architectures": [
-                "SCMP_ARCH_X86_64"
-              ],
-              "defaultAction": "SCMP_ACT_LOG",
-              "syscalls": [
-                {
-                  "action": "SCMP_ACT_ALLOW",
-                  "names": [
-                    "exit",
-                    "exit_group",
-                    "futex",
-                    "nanosleep"
-                  ]
-                },
-                {
-                  "action": "SCMP_ACT_ERRNO",
-                  "names": [
-                    "acct",
-                    "add_key",
-                    "bpf",
-                    "clock_adjtime",
-                    "clock_settime",
-                    "create_module",
-                    "delete_module",
-                    "finit_module",
-                    "get_kernel_syms",
-                    "get_mempolicy",
-                    "init_module",
-                    "ioperm",
-                    "iopl",
-                    "kcmp",
-                    "kexec_file_load",
-                    "kexec_load",
-                    "keyctl",
-                    "lookup_dcookie",
-                    "mbind",
-                    "mount",
-                    "move_pages",
-                    "name_to_handle_at",
-                    "nfsservctl",
-                    "open_by_handle_at",
-                    "perf_event_open",
-                    "personality",
-                    "pivot_root",
-                    "process_vm_readv",
-                    "process_vm_writev",
-                    "ptrace",
-                    "query_module",
-                    "quotactl",
-                    "reboot",
-                    "request_key",
-                    "set_mempolicy",
-                    "setns",
-                    "settimeofday",
-                    "stime",
-                    "swapoff",
-                    "swapon",
-                    "_sysctl",
-                    "sysfs",
-                    "umount2",
-                    "umount",
-                    "unshare",
-                    "uselib",
-                    "userfaultfd",
-                    "ustat",
-                    "vm86old",
-                    "vm86"
-                  ]
-                }
-              ]
-            }
-          },
-          {
-            "apiVersion": "security-profiles-operator.x-k8s.io/v1alpha2",
-            "kind": "SelinuxProfile",
-            "metadata": {
-              "name": "errorlogger"
-            },
-            "spec": {
-              "allow": {
-                "var_log_t": {
-                  "dir": [
-                    "open",
-                    "read",
-                    "getattr",
-                    "lock",
-                    "search",
-                    "ioctl",
-                    "add_name",
-                    "remove_name",
-                    "write"
-                  ],
-                  "file": [
-                    "getattr",
-                    "read",
-                    "write",
-                    "append",
-                    "ioctl",
-                    "lock",
-                    "map",
-                    "open",
-                    "create"
-                  ],
-                  "sock_file": [
-                    "getattr",
-                    "read",
-                    "write",
-                    "append",
-                    "open"
-                  ]
-                }
-              },
-              "inherit": [
-                {
-                  "name": "container"
-                }
-              ]
-            }
-          }
-        ]
-      capabilities: Basic Install
-      categories: Security
-      features.operators.openshift.io/disconnected: "true"
-      features.operators.openshift.io/fips-compliant: "true"
-      features.operators.openshift.io/proxy-aware: "false"
-      features.operators.openshift.io/tls-profiles: "false"
-      features.operators.openshift.io/token-auth-aws: "false"
-      features.operators.openshift.io/token-auth-azure: "false"
-      features.operators.openshift.io/token-auth-gcp: "false"
-      olm.skipRange: '>=0.4.1 <0.8.6'
-      operatorframework.io/cluster-monitoring: "true"
-      operatorframework.io/suggested-namespace: openshift-security-profiles
-      operators.openshift.io/valid-subscription: '["OpenShift Kubernetes Engine",
-        "OpenShift Container Platform", "OpenShift Platform Plus"]'
-      operators.operatorframework.io/builder: operator-sdk-v1.25.0
-      operators.operatorframework.io/project_layout: go.kubebuilder.io/v3
-    apiServiceDefinitions: {}
-    crdDescriptions:
-      owned:
-      - description: ProfileBinding is the Schema for the profilebindings API.
-        displayName: Profile Binding
-        kind: ProfileBinding
-        name: profilebindings.security-profiles-operator.x-k8s.io
-        version: v1alpha1
-      - description: ProfileRecording is the Schema for the profilerecordings API.
-        displayName: Profile Recording
-        kind: ProfileRecording
-        name: profilerecordings.security-profiles-operator.x-k8s.io
-        version: v1alpha1
-      - description: SeccompProfile is a cluster level specification for a seccomp
-          profile. See https://github.com/opencontainers/runtime-spec/blob/master/config-linux.md#seccomp
-        displayName: Seccomp Profile
-        kind: SeccompProfile
-        name: seccompprofiles.security-profiles-operator.x-k8s.io
-        version: v1beta1
-      - description: SecurityProfileNodeStatus is a per-node status of a security
-          profile
-        displayName: Security Profile Node Status
-        kind: SecurityProfileNodeStatus
-        name: securityprofilenodestatuses.security-profiles-operator.x-k8s.io
-        version: v1alpha1
-      - description: SecurityProfilesOperatorDaemon is the Schema to configure the
-          spod deployment.
-        displayName: Security Profiles Operator Daemon
-        kind: SecurityProfilesOperatorDaemon
-        name: securityprofilesoperatordaemons.security-profiles-operator.x-k8s.io
-        version: v1alpha1
-      - kind: RawSelinuxProfile
-        name: rawselinuxprofiles.security-profiles-operator.x-k8s.io
-        version: v1alpha2
-      - description: SelinuxProfile is the Schema for the selinuxprofiles API.
-        displayName: Selinux Profile
-        kind: SelinuxProfile
-        name: selinuxprofiles.security-profiles-operator.x-k8s.io
-        version: v1alpha2
-      - description: AppArmorProfile is a cluster level specification for an AppArmor
-          profile.
-        displayName: App Armor Profile
-        kind: AppArmorProfile
-        name: apparmorprofiles.security-profiles-operator.x-k8s.io
-        version: v1alpha1
-    description: SPO is an operator which aims to make it easier for users to use
-      SELinux, seccomp and AppArmor in Kubernetes clusters
-    displayName: Security Profiles Operator
-    installModes:
-    - supported: true
-      type: OwnNamespace
-    - supported: true
-      type: SingleNamespace
-    - supported: true
-      type: MultiNamespace
-    - supported: true
-      type: AllNamespaces
-    keywords:
-    - security
-    - selinux
-    - seccomp
-    - apparmor
-    - ebpf
-    labels:
-      operatorframework.io/arch.amd64: supported
-    links:
-    - name: Security Profiles Operator
-      url: https://github.com/openshift/security-profiles-operator
-    maintainers:
-    - email: support@redhat.com
-      name: Red Hat support
-    maturity: alpha
-    provider:
-      name: Red Hat
-      url: https://www.redhat.com
+          ]
+        capabilities: Basic Install
+        categories: Security
+        features.operators.openshift.io/disconnected: "true"
+        features.operators.openshift.io/fips-compliant: "true"
+        features.operators.openshift.io/proxy-aware: "false"
+        features.operators.openshift.io/tls-profiles: "false"
+        features.operators.openshift.io/token-auth-aws: "false"
+        features.operators.openshift.io/token-auth-azure: "false"
+        features.operators.openshift.io/token-auth-gcp: "false"
+        olm.skipRange: '>=0.4.1 <0.8.6'
+        operatorframework.io/cluster-monitoring: "true"
+        operatorframework.io/suggested-namespace: openshift-security-profiles
+        operators.openshift.io/valid-subscription: '["OpenShift Kubernetes Engine", "OpenShift Container Platform", "OpenShift Platform Plus"]'
+        operators.operatorframework.io/builder: operator-sdk-v1.25.0
+        operators.operatorframework.io/project_layout: go.kubebuilder.io/v3
+      apiServiceDefinitions: {}
+      crdDescriptions:
+        owned:
+          - description: ProfileBinding is the Schema for the profilebindings API.
+            displayName: Profile Binding
+            kind: ProfileBinding
+            name: profilebindings.security-profiles-operator.x-k8s.io
+            version: v1alpha1
+          - description: ProfileRecording is the Schema for the profilerecordings API.
+            displayName: Profile Recording
+            kind: ProfileRecording
+            name: profilerecordings.security-profiles-operator.x-k8s.io
+            version: v1alpha1
+          - description: SeccompProfile is a cluster level specification for a seccomp profile. See https://github.com/opencontainers/runtime-spec/blob/master/config-linux.md#seccomp
+            displayName: Seccomp Profile
+            kind: SeccompProfile
+            name: seccompprofiles.security-profiles-operator.x-k8s.io
+            version: v1beta1
+          - description: SecurityProfileNodeStatus is a per-node status of a security profile
+            displayName: Security Profile Node Status
+            kind: SecurityProfileNodeStatus
+            name: securityprofilenodestatuses.security-profiles-operator.x-k8s.io
+            version: v1alpha1
+          - description: SecurityProfilesOperatorDaemon is the Schema to configure the spod deployment.
+            displayName: Security Profiles Operator Daemon
+            kind: SecurityProfilesOperatorDaemon
+            name: securityprofilesoperatordaemons.security-profiles-operator.x-k8s.io
+            version: v1alpha1
+          - kind: RawSelinuxProfile
+            name: rawselinuxprofiles.security-profiles-operator.x-k8s.io
+            version: v1alpha2
+          - description: SelinuxProfile is the Schema for the selinuxprofiles API.
+            displayName: Selinux Profile
+            kind: SelinuxProfile
+            name: selinuxprofiles.security-profiles-operator.x-k8s.io
+            version: v1alpha2
+          - description: AppArmorProfile is a cluster level specification for an AppArmor profile.
+            displayName: App Armor Profile
+            kind: AppArmorProfile
+            name: apparmorprofiles.security-profiles-operator.x-k8s.io
+            version: v1alpha1
+      description: SPO is an operator which aims to make it easier for users to use SELinux, seccomp and AppArmor in Kubernetes clusters
+      displayName: Security Profiles Operator
+      installModes:
+        - supported: true
+          type: OwnNamespace
+        - supported: true
+          type: SingleNamespace
+        - supported: true
+          type: MultiNamespace
+        - supported: true
+          type: AllNamespaces
+      keywords:
+        - security
+        - selinux
+        - seccomp
+        - apparmor
+        - ebpf
+      labels:
+        operatorframework.io/arch.amd64: supported
+      links:
+        - name: Security Profiles Operator
+          url: https://github.com/openshift/security-profiles-operator
+      maintainers:
+        - email: support@redhat.com
+          name: Red Hat support
+      maturity: alpha
+      provider:
+        name: Red Hat
+        url: https://www.redhat.com
 relatedImages:
-- image: registry.redhat.io/compliance/openshift-security-profiles-operator-bundle@sha256:52310e20ac08d19c147554e78b9ed4a31e2ae349403c6b8b2fc744ce996a8246
-  name: ""
-- image: registry.redhat.io/compliance/openshift-security-profiles-rhel8-operator@sha256:c18e3ec3851f3f11f69b990a4890b9fed8fe9d5c4d769857db623e56ff03bac6
-  name: security-profiles-operator
-- image: registry.redhat.io/compliance/openshift-selinuxd-rhel8@sha256:30c41f55a1696d3cd4e52a2bd1acedf390f98993ea348c01e554a3158069f95c
-  name: selinuxd
-- image: registry.redhat.io/compliance/openshift-selinuxd-rhel8@sha256:30c41f55a1696d3cd4e52a2bd1acedf390f98993ea348c01e554a3158069f95c
-  name: selinuxd_el8
-- image: registry.redhat.io/compliance/openshift-selinuxd-rhel9@sha256:e70bc58c180655b98f5f1cda84d1314f57f9df919cd184183d91544e26849dd0
-  name: selinuxd_el9
-- image: registry.redhat.io/openshift4/ose-kube-rbac-proxy@sha256:1172e150fff22c5eeab572f26961f3f53fbf896ee76d08c7503cfe2777c55458
-  name: rbac_proxy
+  - image: registry.redhat.io/compliance/openshift-security-profiles-operator-bundle@sha256:52310e20ac08d19c147554e78b9ed4a31e2ae349403c6b8b2fc744ce996a8246
+    name: ""
+  - image: registry.redhat.io/compliance/openshift-security-profiles-rhel8-operator@sha256:c18e3ec3851f3f11f69b990a4890b9fed8fe9d5c4d769857db623e56ff03bac6
+    name: security-profiles-operator
+  - image: registry.redhat.io/compliance/openshift-selinuxd-rhel8@sha256:30c41f55a1696d3cd4e52a2bd1acedf390f98993ea348c01e554a3158069f95c
+    name: selinuxd
+  - image: registry.redhat.io/compliance/openshift-selinuxd-rhel8@sha256:30c41f55a1696d3cd4e52a2bd1acedf390f98993ea348c01e554a3158069f95c
+    name: selinuxd_el8
+  - image: registry.redhat.io/compliance/openshift-selinuxd-rhel9@sha256:e70bc58c180655b98f5f1cda84d1314f57f9df919cd184183d91544e26849dd0
+    name: selinuxd_el9
+  - image: registry.redhat.io/openshift4/ose-kube-rbac-proxy@sha256:1172e150fff22c5eeab572f26961f3f53fbf896ee76d08c7503cfe2777c55458
+    name: rbac_proxy
+schema: olm.bundle
+---
+image: registry.redhat.io/compliance/openshift-security-profiles-operator-bundle@sha256:e54a9ae5ed3b8d5822d8f1117cf4c4df8fbb3222b55f8fdf78c7ef30baf0861f
+name: security-profiles-operator.v0.9.0
+package: security-profiles-operator
+properties:
+  - type: olm.gvk
+    value:
+      group: security-profiles-operator.x-k8s.io
+      kind: AppArmorProfile
+      version: v1alpha1
+  - type: olm.gvk
+    value:
+      group: security-profiles-operator.x-k8s.io
+      kind: ProfileBinding
+      version: v1alpha1
+  - type: olm.gvk
+    value:
+      group: security-profiles-operator.x-k8s.io
+      kind: ProfileRecording
+      version: v1alpha1
+  - type: olm.gvk
+    value:
+      group: security-profiles-operator.x-k8s.io
+      kind: RawSelinuxProfile
+      version: v1alpha2
+  - type: olm.gvk
+    value:
+      group: security-profiles-operator.x-k8s.io
+      kind: SeccompProfile
+      version: v1beta1
+  - type: olm.gvk
+    value:
+      group: security-profiles-operator.x-k8s.io
+      kind: SecurityProfileNodeStatus
+      version: v1alpha1
+  - type: olm.gvk
+    value:
+      group: security-profiles-operator.x-k8s.io
+      kind: SecurityProfilesOperatorDaemon
+      version: v1alpha1
+  - type: olm.gvk
+    value:
+      group: security-profiles-operator.x-k8s.io
+      kind: SelinuxProfile
+      version: v1alpha2
+  - type: olm.package
+    value:
+      packageName: security-profiles-operator
+      version: 0.9.0
+  - type: olm.csv.metadata
+    value:
+      annotations:
+        alm-examples: |-
+          [
+            {
+              "apiVersion": "security-profiles-operator.x-k8s.io/v1alpha1",
+              "kind": "AppArmorProfile",
+              "metadata": {
+                "annotations": {
+                  "description": "Block writing to any files in the disk."
+                },
+                "name": "test-profile"
+              },
+              "spec": {
+                "abstract": {
+                  "filesystem": {
+                    "readOnlyPaths": [],
+                    "readWritePaths": [],
+                    "writeOnlyPaths": []
+                  }
+                }
+              }
+            },
+            {
+              "apiVersion": "security-profiles-operator.x-k8s.io/v1alpha1",
+              "kind": "SecurityProfilesOperatorDaemon",
+              "metadata": {
+                "name": "spod",
+                "namespace": "security-profiles-operator"
+              },
+              "spec": {
+                "enableAppArmor": false,
+                "enableLogEnricher": false,
+                "enableSelinux": false
+              }
+            },
+            {
+              "apiVersion": "security-profiles-operator.x-k8s.io/v1alpha1",
+              "kind": "ProfileRecording",
+              "metadata": {
+                "name": "test-recording"
+              },
+              "spec": {
+                "kind": "SeccompProfile",
+                "podSelector": {
+                  "matchLabels": {
+                    "app": "alpine"
+                  }
+                },
+                "recorder": "bpf"
+              }
+            },
+            {
+              "apiVersion": "security-profiles-operator.x-k8s.io/v1alpha1",
+              "kind": "ProfileBinding",
+              "metadata": {
+                "name": "profile-binding"
+              },
+              "spec": {
+                "image": "nginx:1.19.1",
+                "profileRef": {
+                  "kind": "SeccompProfile",
+                  "name": "profile-allow-unsafe"
+                }
+              }
+            },
+            {
+              "apiVersion": "security-profiles-operator.x-k8s.io/v1alpha2",
+              "kind": "RawSelinuxProfile",
+              "metadata": {
+                "name": "errorlogger"
+              },
+              "spec": {
+                "policy": "(blockinherit container)\n(allow process var_log_t ( dir ( open read getattr lock search ioctl add_name remove_name write ))) \n(allow process var_log_t ( file ( getattr read write append ioctl lock map open create  ))) \n(allow process var_log_t ( sock_file ( getattr read write append open  ))) \n"
+              }
+            },
+            {
+              "apiVersion": "security-profiles-operator.x-k8s.io/v1beta1",
+              "kind": "SeccompProfile",
+              "metadata": {
+                "annotations": {
+                  "description": "Blocks all syscalls."
+                },
+                "name": "profile-block-all"
+              },
+              "spec": {
+                "defaultAction": "SCMP_ACT_ERRNO"
+              }
+            },
+            {
+              "apiVersion": "security-profiles-operator.x-k8s.io/v1beta1",
+              "kind": "SeccompProfile",
+              "metadata": {
+                "annotations": {
+                  "description": "UNSAFE: Allows all syscalls whilst logging their use. Similar to running as unconfined in terms of enforcement."
+                },
+                "name": "profile-complain-unsafe"
+              },
+              "spec": {
+                "defaultAction": "SCMP_ACT_LOG"
+              }
+            },
+            {
+              "apiVersion": "security-profiles-operator.x-k8s.io/v1beta1",
+              "kind": "SeccompProfile",
+              "metadata": {
+                "annotations": {
+                  "description": "UNSAFE: Allows all syscalls. Similar to running as unconfined as it provides no enforcement."
+                },
+                "name": "profile-allow-unsafe"
+              },
+              "spec": {
+                "defaultAction": "SCMP_ACT_ALLOW"
+              }
+            },
+            {
+              "apiVersion": "security-profiles-operator.x-k8s.io/v1beta1",
+              "kind": "SeccompProfile",
+              "metadata": {
+                "annotations": {
+                  "description": "Enables complain mode whilst blocking high-risk syscalls. Some essential syscalls are allowed to decrease log noise."
+                },
+                "name": "profile-complain-block-high-risk"
+              },
+              "spec": {
+                "architectures": [
+                  "SCMP_ARCH_X86_64"
+                ],
+                "defaultAction": "SCMP_ACT_LOG",
+                "syscalls": [
+                  {
+                    "action": "SCMP_ACT_ALLOW",
+                    "names": [
+                      "exit",
+                      "exit_group",
+                      "futex",
+                      "nanosleep"
+                    ]
+                  },
+                  {
+                    "action": "SCMP_ACT_ERRNO",
+                    "names": [
+                      "acct",
+                      "add_key",
+                      "bpf",
+                      "clock_adjtime",
+                      "clock_settime",
+                      "create_module",
+                      "delete_module",
+                      "finit_module",
+                      "get_kernel_syms",
+                      "get_mempolicy",
+                      "init_module",
+                      "ioperm",
+                      "iopl",
+                      "kcmp",
+                      "kexec_file_load",
+                      "kexec_load",
+                      "keyctl",
+                      "lookup_dcookie",
+                      "mbind",
+                      "mount",
+                      "move_pages",
+                      "name_to_handle_at",
+                      "nfsservctl",
+                      "open_by_handle_at",
+                      "perf_event_open",
+                      "personality",
+                      "pivot_root",
+                      "process_vm_readv",
+                      "process_vm_writev",
+                      "ptrace",
+                      "query_module",
+                      "quotactl",
+                      "reboot",
+                      "request_key",
+                      "set_mempolicy",
+                      "setns",
+                      "settimeofday",
+                      "stime",
+                      "swapoff",
+                      "swapon",
+                      "_sysctl",
+                      "sysfs",
+                      "umount2",
+                      "umount",
+                      "unshare",
+                      "uselib",
+                      "userfaultfd",
+                      "ustat",
+                      "vm86old",
+                      "vm86"
+                    ]
+                  }
+                ]
+              }
+            },
+            {
+              "apiVersion": "security-profiles-operator.x-k8s.io/v1alpha2",
+              "kind": "SelinuxProfile",
+              "metadata": {
+                "name": "errorlogger"
+              },
+              "spec": {
+                "allow": {
+                  "var_log_t": {
+                    "dir": [
+                      "open",
+                      "read",
+                      "getattr",
+                      "lock",
+                      "search",
+                      "ioctl",
+                      "add_name",
+                      "remove_name",
+                      "write"
+                    ],
+                    "file": [
+                      "getattr",
+                      "read",
+                      "write",
+                      "append",
+                      "ioctl",
+                      "lock",
+                      "map",
+                      "open",
+                      "create"
+                    ],
+                    "sock_file": [
+                      "getattr",
+                      "read",
+                      "write",
+                      "append",
+                      "open"
+                    ]
+                  }
+                },
+                "inherit": [
+                  {
+                    "name": "container"
+                  }
+                ]
+              }
+            }
+          ]
+        capabilities: Basic Install
+        categories: Security
+        createdAt: "2025-02-25T13:34:54Z"
+        features.operators.openshift.io/disconnected: "true"
+        features.operators.openshift.io/fips-compliant: "true"
+        features.operators.openshift.io/proxy-aware: "false"
+        features.operators.openshift.io/tls-profiles: "false"
+        features.operators.openshift.io/token-auth-aws: "false"
+        features.operators.openshift.io/token-auth-azure: "false"
+        features.operators.openshift.io/token-auth-gcp: "false"
+        olm.skipRange: '>=0.4.1 <0.9.0'
+        operatorframework.io/cluster-monitoring: "true"
+        operatorframework.io/suggested-namespace: openshift-security-profiles
+        operators.openshift.io/valid-subscription: '["OpenShift Kubernetes Engine", "OpenShift Container Platform", "OpenShift Platform Plus"]'
+        operators.operatorframework.io/builder: operator-sdk-v1.37.0
+        operators.operatorframework.io/project_layout: go.kubebuilder.io/v4
+      apiServiceDefinitions: {}
+      crdDescriptions:
+        owned:
+          - description: ProfileBinding is the Schema for the profilebindings API.
+            displayName: Profile Binding
+            kind: ProfileBinding
+            name: profilebindings.security-profiles-operator.x-k8s.io
+            version: v1alpha1
+          - description: ProfileRecording is the Schema for the profilerecordings API.
+            displayName: Profile Recording
+            kind: ProfileRecording
+            name: profilerecordings.security-profiles-operator.x-k8s.io
+            version: v1alpha1
+          - description: SeccompProfile is a cluster level specification for a seccomp profile. See https://github.com/opencontainers/runtime-spec/blob/master/config-linux.md#seccomp
+            displayName: Seccomp Profile
+            kind: SeccompProfile
+            name: seccompprofiles.security-profiles-operator.x-k8s.io
+            version: v1beta1
+          - description: SecurityProfileNodeStatus is a per-node status of a security profile
+            displayName: Security Profile Node Status
+            kind: SecurityProfileNodeStatus
+            name: securityprofilenodestatuses.security-profiles-operator.x-k8s.io
+            version: v1alpha1
+          - description: SecurityProfilesOperatorDaemon is the Schema to configure the spod deployment.
+            displayName: Security Profiles Operator Daemon
+            kind: SecurityProfilesOperatorDaemon
+            name: securityprofilesoperatordaemons.security-profiles-operator.x-k8s.io
+            version: v1alpha1
+          - kind: RawSelinuxProfile
+            name: rawselinuxprofiles.security-profiles-operator.x-k8s.io
+            version: v1alpha2
+          - description: SelinuxProfile is the Schema for the selinuxprofiles API.
+            displayName: Selinux Profile
+            kind: SelinuxProfile
+            name: selinuxprofiles.security-profiles-operator.x-k8s.io
+            version: v1alpha2
+          - description: AppArmorProfile is a cluster level specification for an AppArmor profile.
+            displayName: App Armor Profile
+            kind: AppArmorProfile
+            name: apparmorprofiles.security-profiles-operator.x-k8s.io
+            version: v1alpha1
+      description: SPO is an operator which aims to make it easier for users to use SELinux, seccomp and AppArmor in Kubernetes clusters
+      displayName: Security Profiles Operator
+      installModes:
+        - supported: true
+          type: OwnNamespace
+        - supported: true
+          type: SingleNamespace
+        - supported: true
+          type: MultiNamespace
+        - supported: true
+          type: AllNamespaces
+      keywords:
+        - security
+        - selinux
+        - seccomp
+        - apparmor
+        - ebpf
+      labels:
+        operatorframework.io/arch.amd64: supported
+      links:
+        - name: Security Profiles Operator
+          url: https://github.com/openshift/security-profiles-operator
+      maintainers:
+        - email: support@redhat.com
+          name: Red Hat support
+      maturity: alpha
+      provider:
+        name: Red Hat
+        url: https://www.redhat.com
+relatedImages:
+  - image: registry.redhat.io/compliance/openshift-security-profiles-operator-bundle@sha256:e54a9ae5ed3b8d5822d8f1117cf4c4df8fbb3222b55f8fdf78c7ef30baf0861f
+    name: ""
+  - image: registry.redhat.io/compliance/openshift-security-profiles-rhel8-operator@sha256:779836f8dd4ba501b8bf8b8f0b89f0f6f5280904f546357006259f4d2b39accb
+    name: ""
 schema: olm.bundle
