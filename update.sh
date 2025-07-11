@@ -3,10 +3,10 @@ set -euo pipefail
 IFS=$'\n\t'
 
 # --- CONFIGURATION ---
-OCP_VERSIONS=(4.13 4.14 4.15 4.16 4.17 4.18 4.19)
+OCP_VERSIONS=(4.12 4.13 4.14 4.15 4.16 4.17 4.18 4.19)
 
 # Old (tag-based) image:
-NEW_BUNDLE="quay.io/redhat-user-workloads/ocp-isc-tenant/security-profiles-operator-bundle-release@sha256:e54a9ae5ed3b8d5822d8f1117cf4c4df8fbb3222b55f8fdf78c7ef30baf0861f"
+NEW_BUNDLE="quay.io/redhat-user-workloads/ocp-isc-tenant/security-profiles-operator-bundle-release@sha256:2480692790de224b0e67edd7e2e27dadc074e1684e9a96c632bfd0caaf10621a"
 
 # New registry/repo to use, but we’ll attach the old image’s actual digest.
 REDHAT_REGISTRY_REPO="registry.redhat.io/compliance/openshift-security-profiles-operator-bundle"

@@ -1568,7 +1568,7 @@ relatedImages:
     name: rbac_proxy
 schema: olm.bundle
 ---
-image: registry.redhat.io/compliance/openshift-security-profiles-operator-bundle@sha256:e54a9ae5ed3b8d5822d8f1117cf4c4df8fbb3222b55f8fdf78c7ef30baf0861f
+image: registry.redhat.io/compliance/openshift-security-profiles-operator-bundle@sha256:2480692790de224b0e67edd7e2e27dadc074e1684e9a96c632bfd0caaf10621a
 name: security-profiles-operator.v0.9.0
 package: security-profiles-operator
 properties:
@@ -1938,6 +1938,7 @@ properties:
         - ebpf
       labels:
         operatorframework.io/arch.amd64: supported
+        operatorframework.io/arch.ppc64le: supported
       links:
         - name: Security Profiles Operator
           url: https://github.com/openshift/security-profiles-operator
@@ -1949,8 +1950,16 @@ properties:
         name: Red Hat
         url: https://www.redhat.com
 relatedImages:
-  - image: registry.redhat.io/compliance/openshift-security-profiles-operator-bundle@sha256:e54a9ae5ed3b8d5822d8f1117cf4c4df8fbb3222b55f8fdf78c7ef30baf0861f
+  - image: registry.redhat.io/compliance/openshift-security-profiles-operator-bundle@sha256:2480692790de224b0e67edd7e2e27dadc074e1684e9a96c632bfd0caaf10621a
     name: ""
-  - image: registry.redhat.io/compliance/openshift-security-profiles-rhel8-operator@sha256:779836f8dd4ba501b8bf8b8f0b89f0f6f5280904f546357006259f4d2b39accb
+  - image: registry.redhat.io/compliance/openshift-security-profiles-rhel8-operator@sha256:78d85ef076692d2f6ac31eb9ce451f2b7c058635f4184e831c9c4672138d7a2b
     name: ""
+  - image: registry.redhat.io/compliance/openshift-selinuxd-rhel8@sha256:4e068407c2da64f026715a13c8e5c468999f3c75abf9871ce3ff9082cdac0b37
+    name: selinuxd
+  - image: registry.redhat.io/compliance/openshift-selinuxd-rhel8@sha256:4e068407c2da64f026715a13c8e5c468999f3c75abf9871ce3ff9082cdac0b37
+    name: selinuxd-el8
+  - image: registry.redhat.io/compliance/openshift-selinuxd-rhel9@sha256:d68027f56da1e60333241c2f89829d156a652f3a1af7b771c519aafa68d308a0
+    name: selinuxd-el9
+  - image: registry.redhat.io/compliance/openshift-selinuxd-rhel9@sha256:d68027f56da1e60333241c2f89829d156a652f3a1af7b771c519aafa68d308a0
+    name: selinuxd-fedora
 schema: olm.bundle
