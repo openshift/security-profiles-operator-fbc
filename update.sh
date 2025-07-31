@@ -3,10 +3,10 @@ set -euo pipefail
 IFS=$'\n\t'
 
 # --- CONFIGURATION ---
-OCP_VERSIONS=(4.13 4.14 4.15 4.16 4.17 4.18 4.19)
+OCP_VERSIONS=(4.12 4.13 4.14 4.15 4.16 4.17 4.18 4.19)
 
 # Old (tag-based) image:
-NEW_BUNDLE="quay.io/redhat-user-workloads/ocp-isc-tenant/security-profiles-operator-bundle-release:release-0-9"
+NEW_BUNDLE="quay.io/redhat-user-workloads/ocp-isc-tenant/security-profiles-operator-bundle-release@sha256:70d0b7610958d0f9f85080d7ea3a4034165b25bb0e73a738e2e41877abd28078"
 
 # New registry/repo to use, but we’ll attach the old image’s actual digest.
 REDHAT_REGISTRY_REPO="registry.redhat.io/compliance/openshift-security-profiles-operator-bundle"
@@ -14,7 +14,7 @@ REDHAT_REGISTRY_REPO="registry.redhat.io/compliance/openshift-security-profiles-
 # (Optional) Some additional parameters you might use later
 OP_V="0.9.0"
 CSV_NEW="security-profiles-operator.v${OP_V}"
-SKIP_RANGE=">=1.0.0 <${OP_V}"
+SKIP_RANGE=">=0.4.1 <${OP_V}"
 
 echo "⏳ Determining digest for old image: ${NEW_BUNDLE}"
 DIGEST="$(skopeo inspect "docker://${NEW_BUNDLE}" | jq -r '.Digest')"
@@ -47,13 +47,13 @@ for OCP_V in "${OCP_VERSIONS[@]}"; do
   yq eval-all -i "select(.name? != \"${CSV_NEW}\")" "${CATALOG}"
   yq eval -i "del(.entries[] | select(.name? == \"${CSV_NEW}\"))" "${CATALOG}"
 
-  # 1) Find the "last" name in the stable channel's entries array.
+  # 1) Find the "last" name in the release-alpha-rhel-8 channel's entries array.
   LAST_NAME=$(yq eval '
-  select(.schema == "olm.channel" and .name == "stable") |
+  select(.schema == "olm.channel" and .name == "release-alpha-rhel-8") |
   .entries[-1].name
   ' "${CATALOG}")
 
-  echo "Last entry in stable channel is: ${LAST_NAME}"
+  echo "Last entry in release-alpha-rhel-8 channel is: ${LAST_NAME}"
 
   # # --- 1) Render the new bundle into a temp file ---
   if [[ "$OCP_V" =~ ("4.12"|"4.13"|"4.14"|"4.15"|"4.16") ]]; then
@@ -65,8 +65,8 @@ for OCP_V in "${OCP_VERSIONS[@]}"; do
 
   # 2) In-place update: remove any old entry named CSV_NEW, then add one new entry.
   yq eval -i -I1 "
-  (select(.schema == \"olm.channel\" and .name == \"stable\") | .entries) as \$entries |
-  select(.schema == \"olm.channel\" and .name == \"stable\").entries =
+  (select(.schema == \"olm.channel\" and .name == \"release-alpha-rhel-8\") | .entries) as \$entries |
+  select(.schema == \"olm.channel\" and .name == \"release-alpha-rhel-8\").entries =
       (
       \$entries
       | map(select(.name != \"${CSV_NEW}\"))
