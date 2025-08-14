@@ -32,7 +32,7 @@ entries:
   schema: olm.bundle
 - image: registry.redhat.io/compliance/openshift-security-profiles-operator-bundle@sha256:52310e20ac08d19c147554e78b9ed4a31e2ae349403c6b8b2fc744ce996a8246
   schema: olm.bundle
-- image: registry.redhat.io/compliance/openshift-security-profiles-operator-bundle@sha256:70d0b7610958d0f9f85080d7ea3a4034165b25bb0e73a738e2e41877abd28078
+- image: registry.redhat.io/compliance/openshift-security-profiles-operator-bundle@sha256:f8028bd9a3b86dc5369da8f6f7f3d668bc9b3f6b14bd271be0200f9808d46ed1
   schema: olm.bundle
 schema: olm.template.basic
 
