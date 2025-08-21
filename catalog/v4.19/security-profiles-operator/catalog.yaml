@@ -1568,7 +1568,7 @@ relatedImages:
     name: rbac_proxy
 schema: olm.bundle
 ---
-image: registry.redhat.io/compliance/openshift-security-profiles-operator-bundle@sha256:f8028bd9a3b86dc5369da8f6f7f3d668bc9b3f6b14bd271be0200f9808d46ed1
+image: registry.redhat.io/compliance/openshift-security-profiles-operator-bundle@sha256:16a7c956ac80dfd7271663fd734913135dad2d705f2545b7629bfc3b86c0d9f6
 name: security-profiles-operator.v0.9.0
 package: security-profiles-operator
 properties:
@@ -1951,9 +1951,9 @@ properties:
         name: Red Hat
         url: https://www.redhat.com
 relatedImages:
-  - image: registry.redhat.io/compliance/openshift-security-profiles-operator-bundle@sha256:f8028bd9a3b86dc5369da8f6f7f3d668bc9b3f6b14bd271be0200f9808d46ed1
+  - image: registry.redhat.io/compliance/openshift-security-profiles-operator-bundle@sha256:16a7c956ac80dfd7271663fd734913135dad2d705f2545b7629bfc3b86c0d9f6
     name: ""
-  - image: registry.redhat.io/compliance/openshift-security-profiles-rhel8-operator@sha256:a3e3e87c4ffe86499b3165ba2cc20eccdc56624398d3a18c7ada8ae18357bfbc
+  - image: registry.redhat.io/compliance/openshift-security-profiles-rhel8-operator@sha256:08c56e9eaa7b5fd66ea9c9a4e1667f8ff3726d7aa3c3b853a2da5d37f948780b
     name: ""
   - image: registry.redhat.io/compliance/openshift-selinuxd-rhel8@sha256:9556b7d523895b1f351f6745a5a62826a9b1f0d0935c46d34f6cc1ddeeb8b252
     name: selinuxd
