@@ -6,7 +6,7 @@ IFS=$'\n\t'
 OCP_VERSIONS=(4.12 4.13 4.14 4.15 4.16 4.17 4.18 4.19)
 
 # Old (tag-based) image:
-NEW_BUNDLE="quay.io/redhat-user-workloads/ocp-isc-tenant/security-profiles-operator-bundle-release@sha256:16a7c956ac80dfd7271663fd734913135dad2d705f2545b7629bfc3b86c0d9f6"
+NEW_BUNDLE="quay.io/redhat-user-workloads/ocp-isc-tenant/security-profiles-operator-bundle-release@sha256:1b0bd69421d57bde932a3d2ea63dd2a59debad8aa7531ba37f7d00cc1512785b"
 
 # New registry/repo to use, but we’ll attach the old image’s actual digest.
 REDHAT_REGISTRY_REPO="registry.redhat.io/compliance/openshift-security-profiles-operator-bundle"
