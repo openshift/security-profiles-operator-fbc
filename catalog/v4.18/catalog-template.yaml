@@ -24,15 +24,15 @@ entries:
   name: release-alpha-rhel-8
   package: security-profiles-operator
   schema: olm.channel
-- image: registry.redhat.io/compliance/openshift-security-profiles-operator-bundle@sha256:5f0f20e6f580b18126ebbdf66457f3aaad6ebb73a2724b4e79581311582b3274
+- image: registry.redhat.io/compliance/openshift-security-profiles-operator-bundle@sha256:40771028def743730a779736ab7465113645edd9e1d45cb7e69eaaf95531584b
   schema: olm.bundle
-- image: registry.redhat.io/compliance/openshift-security-profiles-operator-bundle@sha256:beb3f94933d66193f0ce2f9904acde691281a7218aa7c007f2e2b69f9fd5c2d0
+- image: registry.redhat.io/compliance/openshift-security-profiles-operator-bundle@sha256:40771028def743730a779736ab7465113645edd9e1d45cb7e69eaaf95531584b
   schema: olm.bundle
-- image: registry.redhat.io/compliance/openshift-security-profiles-operator-bundle@sha256:7e24d269270f6dba6338c44235a81287fa8401391973bb89a903d29a8dcad7f0
+- image: registry.redhat.io/compliance/openshift-security-profiles-operator-bundle@sha256:40771028def743730a779736ab7465113645edd9e1d45cb7e69eaaf95531584b
   schema: olm.bundle
-- image: registry.redhat.io/compliance/openshift-security-profiles-operator-bundle@sha256:52310e20ac08d19c147554e78b9ed4a31e2ae349403c6b8b2fc744ce996a8246
+- image: registry.redhat.io/compliance/openshift-security-profiles-operator-bundle@sha256:40771028def743730a779736ab7465113645edd9e1d45cb7e69eaaf95531584b
   schema: olm.bundle
-- image: registry.redhat.io/compliance/openshift-security-profiles-operator-bundle@sha256:1b0bd69421d57bde932a3d2ea63dd2a59debad8aa7531ba37f7d00cc1512785b
+- image: registry.redhat.io/compliance/openshift-security-profiles-operator-bundle@sha256:40771028def743730a779736ab7465113645edd9e1d45cb7e69eaaf95531584b
   schema: olm.bundle
 schema: olm.template.basic
 

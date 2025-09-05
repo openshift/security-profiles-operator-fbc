@@ -25,7 +25,7 @@ name: release-alpha-rhel-8
 package: security-profiles-operator
 schema: olm.channel
 ---
-image: registry.redhat.io/compliance/openshift-security-profiles-operator-bundle@sha256:5f0f20e6f580b18126ebbdf66457f3aaad6ebb73a2724b4e79581311582b3274
+image: registry.redhat.io/compliance/openshift-security-profiles-operator-bundle@sha256:40771028def743730a779736ab7465113645edd9e1d45cb7e69eaaf95531584b
 name: security-profiles-operator.v0.8.2
 package: security-profiles-operator
 properties:
@@ -143,7 +143,7 @@ properties:
     value:
       data: eyJhcGlWZXJzaW9uIjoidjEiLCJraW5kIjoiU2VydmljZUFjY291bnQiLCJtZXRhZGF0YSI6eyJjcmVhdGlvblRpbWVzdGFtcCI6bnVsbCwibGFiZWxzIjp7ImFwcCI6InNlY3VyaXR5LXByb2ZpbGVzLW9wZXJhdG9yIn0sIm5hbWUiOiJzcG9kIn19
 relatedImages:
-  - image: registry.redhat.io/compliance/openshift-security-profiles-operator-bundle@sha256:5f0f20e6f580b18126ebbdf66457f3aaad6ebb73a2724b4e79581311582b3274
+  - image: registry.redhat.io/compliance/openshift-security-profiles-operator-bundle@sha256:40771028def743730a779736ab7465113645edd9e1d45cb7e69eaaf95531584b
     name: ""
   - image: registry.redhat.io/compliance/openshift-security-profiles-rhel8-operator@sha256:85103123c0834339117b4efc4998bb06b75683f7251169deee5ccba96030ae0b
     name: security-profiles-operator
@@ -157,7 +157,7 @@ relatedImages:
     name: rbac_proxy
 schema: olm.bundle
 ---
-image: registry.redhat.io/compliance/openshift-security-profiles-operator-bundle@sha256:beb3f94933d66193f0ce2f9904acde691281a7218aa7c007f2e2b69f9fd5c2d0
+image: registry.redhat.io/compliance/openshift-security-profiles-operator-bundle@sha256:40771028def743730a779736ab7465113645edd9e1d45cb7e69eaaf95531584b
 name: security-profiles-operator.v0.8.4
 package: security-profiles-operator
 properties:
@@ -275,7 +275,7 @@ properties:
     value:
       data: eyJhcGlWZXJzaW9uIjoidjEiLCJraW5kIjoiU2VydmljZUFjY291bnQiLCJtZXRhZGF0YSI6eyJjcmVhdGlvblRpbWVzdGFtcCI6bnVsbCwibGFiZWxzIjp7ImFwcCI6InNlY3VyaXR5LXByb2ZpbGVzLW9wZXJhdG9yIn0sIm5hbWUiOiJzcG9kIn19
 relatedImages:
-  - image: registry.redhat.io/compliance/openshift-security-profiles-operator-bundle@sha256:beb3f94933d66193f0ce2f9904acde691281a7218aa7c007f2e2b69f9fd5c2d0
+  - image: registry.redhat.io/compliance/openshift-security-profiles-operator-bundle@sha256:40771028def743730a779736ab7465113645edd9e1d45cb7e69eaaf95531584b
     name: ""
   - image: registry.redhat.io/compliance/openshift-security-profiles-rhel8-operator@sha256:37ccaa8e4981bcfe6c84abc976187af1a3e465ce7c6d2a21f7a6c4c38d60aaea
     name: security-profiles-operator
@@ -289,7 +289,7 @@ relatedImages:
     name: rbac_proxy
 schema: olm.bundle
 ---
-image: registry.redhat.io/compliance/openshift-security-profiles-operator-bundle@sha256:7e24d269270f6dba6338c44235a81287fa8401391973bb89a903d29a8dcad7f0
+image: registry.redhat.io/compliance/openshift-security-profiles-operator-bundle@sha256:40771028def743730a779736ab7465113645edd9e1d45cb7e69eaaf95531584b
 name: security-profiles-operator.v0.8.5
 package: security-profiles-operator
 properties:
@@ -407,7 +407,7 @@ properties:
     value:
       data: eyJhcGlWZXJzaW9uIjoidjEiLCJraW5kIjoiU2VydmljZUFjY291bnQiLCJtZXRhZGF0YSI6eyJjcmVhdGlvblRpbWVzdGFtcCI6bnVsbCwibGFiZWxzIjp7ImFwcCI6InNlY3VyaXR5LXByb2ZpbGVzLW9wZXJhdG9yIn0sIm5hbWUiOiJzcG9kIn19
 relatedImages:
-  - image: registry.redhat.io/compliance/openshift-security-profiles-operator-bundle@sha256:7e24d269270f6dba6338c44235a81287fa8401391973bb89a903d29a8dcad7f0
+  - image: registry.redhat.io/compliance/openshift-security-profiles-operator-bundle@sha256:40771028def743730a779736ab7465113645edd9e1d45cb7e69eaaf95531584b
     name: ""
   - image: registry.redhat.io/compliance/openshift-security-profiles-rhel8-operator@sha256:82e716bc5470237bc6f966d66664267e72005a05e16b4bd1c937d37755f6ccc8
     name: security-profiles-operator
@@ -421,7 +421,7 @@ relatedImages:
     name: rbac_proxy
 schema: olm.bundle
 ---
-image: registry.redhat.io/compliance/openshift-security-profiles-operator-bundle@sha256:52310e20ac08d19c147554e78b9ed4a31e2ae349403c6b8b2fc744ce996a8246
+image: registry.redhat.io/compliance/openshift-security-profiles-operator-bundle@sha256:40771028def743730a779736ab7465113645edd9e1d45cb7e69eaaf95531584b
 name: security-profiles-operator.v0.8.6
 package: security-profiles-operator
 properties:
@@ -539,7 +539,7 @@ properties:
     value:
       data: eyJhcGlWZXJzaW9uIjoidjEiLCJraW5kIjoiU2VydmljZUFjY291bnQiLCJtZXRhZGF0YSI6eyJjcmVhdGlvblRpbWVzdGFtcCI6bnVsbCwibGFiZWxzIjp7ImFwcCI6InNlY3VyaXR5LXByb2ZpbGVzLW9wZXJhdG9yIn0sIm5hbWUiOiJzcG9kIn19
 relatedImages:
-  - image: registry.redhat.io/compliance/openshift-security-profiles-operator-bundle@sha256:52310e20ac08d19c147554e78b9ed4a31e2ae349403c6b8b2fc744ce996a8246
+  - image: registry.redhat.io/compliance/openshift-security-profiles-operator-bundle@sha256:40771028def743730a779736ab7465113645edd9e1d45cb7e69eaaf95531584b
     name: ""
   - image: registry.redhat.io/compliance/openshift-security-profiles-rhel8-operator@sha256:c18e3ec3851f3f11f69b990a4890b9fed8fe9d5c4d769857db623e56ff03bac6
     name: security-profiles-operator
@@ -553,7 +553,7 @@ relatedImages:
     name: rbac_proxy
 schema: olm.bundle
 ---
-image: registry.redhat.io/compliance/openshift-security-profiles-operator-bundle@sha256:1b0bd69421d57bde932a3d2ea63dd2a59debad8aa7531ba37f7d00cc1512785b
+image: registry.redhat.io/compliance/openshift-security-profiles-operator-bundle@sha256:40771028def743730a779736ab7465113645edd9e1d45cb7e69eaaf95531584b
 name: security-profiles-operator.v0.9.0
 package: security-profiles-operator
 properties:
@@ -671,7 +671,7 @@ properties:
     value:
       data: eyJhcGlWZXJzaW9uIjoidjEiLCJraW5kIjoiU2VydmljZUFjY291bnQiLCJtZXRhZGF0YSI6eyJjcmVhdGlvblRpbWVzdGFtcCI6bnVsbCwibGFiZWxzIjp7ImFwcCI6InNlY3VyaXR5LXByb2ZpbGVzLW9wZXJhdG9yIn0sIm5hbWUiOiJzcG9kIn19
 relatedImages:
-  - image: registry.redhat.io/compliance/openshift-security-profiles-operator-bundle@sha256:1b0bd69421d57bde932a3d2ea63dd2a59debad8aa7531ba37f7d00cc1512785b
+  - image: registry.redhat.io/compliance/openshift-security-profiles-operator-bundle@sha256:40771028def743730a779736ab7465113645edd9e1d45cb7e69eaaf95531584b
     name: ""
   - image: registry.redhat.io/compliance/openshift-security-profiles-rhel8-operator@sha256:e912f838be589fdb4defa2f5e64d923bbf97ac74b565b379ede9584793ba9cae
     name: ""
