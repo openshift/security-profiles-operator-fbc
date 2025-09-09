@@ -1,0 +1,31 @@
+---
+apiVersion: appstudio.redhat.com/v1beta2
+kind: IntegrationTestScenario
+metadata:
+  annotations:
+    test.appstudio.openshift.io/optional: "true"
+  name: security-profiles-operator-fbc-v4-18-e2e-tests
+  namespace: ocp-isc-tenant
+spec:
+  application: security-profiles-operator-fbc-4-18
+  contexts:
+  - description: execute the integration test when component security-profiles-operator-fbc-4-18 updates
+      state
+    name: component_security-profiles-operator-fbc-4-18
+  params:
+    - name: gangway_api_url
+      value: https://gangway-ci.apps.ci.l2s4.p1.openshiftapps.com
+    - name: ocp_ci_job_name
+      value: periodic-ci-openshift-openshift-tests-private-release-4.18-amd64-nightly-gcp-ipi-ovn-winc-f14-security-profiles
+    - name: index_image
+      value: MULTISTAGE_PARAM_OVERRIDE_INDEX_IMAGE
+  resolverRef:
+    params:
+      - name: url
+        value: https://github.com/openshift/security-profiles-operator-fbc.git
+      - name: revision
+        value: main
+      - name: pathInRepo
+        value: .tekton/integration-tests/pipelines/security-profiles-operator-fbc-e2e-test-trigger.yaml
+    resolver: git
+    resourceKind: pipeline
