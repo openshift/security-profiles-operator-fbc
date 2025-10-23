@@ -31,7 +31,6 @@ spec:
   - name: build-platforms
     value:
     - linux/x86_64
-    - linux/ppc64le
   - name: dockerfile
     value: catalog/v4.21/Containerfile
   - name: path-context
