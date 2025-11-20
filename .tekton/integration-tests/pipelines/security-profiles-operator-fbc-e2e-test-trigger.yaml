@@ -1,0 +1,165 @@
+---
+apiVersion: tekton.dev/v1beta1
+kind: Pipeline
+metadata:
+  annotations:
+    pipelinesascode.tekton.dev/task: "[security-profiles-e2e-tests]"
+  name: security-profiles-operator-e2e-test-fbc
+spec:
+  description: |
+    This pipeline automates the process of running e2e tests for Security Profiles Operator. The pipeline fetches the FBC fragment image and
+    passes it as a parameter to the OpenShift CI job using Gangway API.
+  params:
+    - name: SNAPSHOT
+      description: 'The JSON string representing the snapshot of the application under test.'
+      default: '{"components": [{"name":"test-app", "containerImage": "quay.io/example/repo:latest"}]}'
+      type: string
+    - name: test-name
+      description: 'The name of the test corresponding to a defined Konflux integration test.'
+      default: 'security-profiles-operator-e2e-test-fbc'
+      type: string
+    - name: gangway_api_url
+      description: 'URL for the Gangway API'
+      type: string
+    - name: ocp_ci_job_name
+      description: 'OpenShift CI job name'
+      type: string
+    - name: index_image
+      description: 'The key name for the parameter override (e.g., INDEX_IMAGE)'
+      type: string
+  tasks:
+    - name: parse-metadata
+      taskRef:
+        resolver: git
+        params:
+          - name: url
+            value: https://github.com/konflux-ci/integration-examples
+          - name: revision
+            value: main
+          - name: pathInRepo
+            value: tasks/test_metadata.yaml
+      params:
+        - name: SNAPSHOT
+          value: $(params.SNAPSHOT)
+    - name: security-profiles-e2e-tests
+      description: Task to run tests from service repository
+      runAfter:
+        - parse-metadata
+      when:
+        - input: $(tasks.parse-metadata.results.test-event-type)
+          operator: in
+          values: [ "push", "Push", "PUSH" ]
+      params:
+        - name: GANGWAY_API_URL
+          value: $(params.gangway_api_url)
+        - name: OCP_CI_JOB_NAME
+          value: $(params.ocp_ci_job_name)
+        - name: FBC_FRAGMENT
+          value: "$(tasks.parse-metadata.results.component-container-image)"
+        - name: INDEX_IMAGE
+          value: "$(params.index_image)"
+      taskSpec:
+        params:
+          - name: GANGWAY_API_URL
+            type: string
+          - name: OCP_CI_JOB_NAME
+            type: string
+          - name: FBC_FRAGMENT
+            type: string
+          - name: INDEX_IMAGE
+            type: string
+        volumes:
+          - name: credentials
+            emptyDir: {}
+          - name: gangway-api-token
+            secret:
+              secretName: gangway-api-token
+        steps:
+          - name: run-e2e-tests
+            volumeMounts:
+              - name: credentials
+                mountPath: /credentials
+              - name: gangway-api-token
+                mountPath: /secrets/gangway-api-token
+                readOnly: true
+            env:
+              - name: FBC_FRAGMENT
+                value: "$(params.FBC_FRAGMENT)"
+              - name: GANGWAY_API_URL
+                value: "$(params.GANGWAY_API_URL)"
+              - name: OCP_CI_JOB_NAME
+                value: "$(params.OCP_CI_JOB_NAME)"
+              - name: INDEX_IMAGE
+                value: "$(params.INDEX_IMAGE)"
+            image: registry.redhat.io/openshift4/ose-cli:latest
+            script: |
+              # Read the token from the secret file
+              GANGWAY_API_TOKEN=$(cat /secrets/gangway-api-token/gangway_api_token)
+
+              echo "Trigger the OpenShift CI job"
+              
+              # Create the JSON payload dynamically with the configurable key
+              dnf -y install jq
+              JSON_PAYLOAD=$(jq -n \
+                --arg key "${INDEX_IMAGE}" \
+                --arg value "${FBC_FRAGMENT}" \
+                '{
+                  "job_execution_type": "1",
+                  "pod_spec_options": {
+                    "envs": {
+                      ($key): $value
+                    }
+                  }
+                }')
+              
+              echo "JSON payload:"
+              echo "${JSON_PAYLOAD}"
+              
+              RESPONSE=$(curl -X POST -d "${JSON_PAYLOAD}" -H "Content-Type: application/json" -H "Authorization: Bearer ${GANGWAY_API_TOKEN}" "${GANGWAY_API_URL}/v1/executions/${OCP_CI_JOB_NAME}")
+
+              echo "Job trigger response:"
+              echo "${RESPONSE}"
+
+              # Extract job ID from the response
+              JOB_ID=$(echo "${RESPONSE}" | jq -r '.id')
+              echo "Job ID: ${JOB_ID}"
+
+              if [ "${JOB_ID}" != "null" ] && [ -n "${JOB_ID}" ]; then
+                echo "Fetching job details for ID: ${JOB_ID}"
+                
+                # Poll job details until job_url is available
+                MAX_ATTEMPTS=60  # Maximum number of attempts (5 minutes with 5-second intervals)
+                ATTEMPT=0
+                JOB_URL=""
+                
+                while [ ${ATTEMPT} -lt ${MAX_ATTEMPTS} ]; do
+                  echo "Attempt $((ATTEMPT + 1))/${MAX_ATTEMPTS}: Fetching job details..."
+                  
+                  JOB_DETAILS=$(curl -s -X GET -H "Authorization: Bearer ${GANGWAY_API_TOKEN}" "${GANGWAY_API_URL}/v1/executions/${JOB_ID}")
+                  echo "Job details response:"
+                  echo "${JOB_DETAILS}"
+                  
+                  # Extract job_url from the response
+                  JOB_URL=$(echo "${JOB_DETAILS}" | jq -r '.job_url')
+                  
+                  if [ "${JOB_URL}" != "null" ] && [ -n "${JOB_URL}" ] && [ "${JOB_URL}" != "" ]; then
+                    echo "Job URL found: ${JOB_URL}"
+                    break
+                  else
+                    echo "Job URL not yet available, waiting 5 seconds..."
+                    sleep 15
+                    ATTEMPT=$((ATTEMPT + 1))
+                  fi
+                done
+                
+                if [ "${JOB_URL}" = "null" ] || [ -z "${JOB_URL}" ] || [ "${JOB_URL}" = "" ]; then
+                  echo "Job URL not available after ${MAX_ATTEMPTS} attempts"
+                  exit 1
+                else
+                  echo "Final job details with URL:"
+                  echo "${JOB_DETAILS}"
+                fi
+              else
+                echo "Failed to extract job ID from response"
+                exit 1
+              fi
