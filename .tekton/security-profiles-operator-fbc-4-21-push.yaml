@@ -188,7 +188,7 @@ spec:
         - name: name
           value: run-opm-command-oci-ta
         - name: bundle
-          value: quay.io/konflux-ci/tekton-catalog/task-run-opm-command-oci-ta:0.1@sha256:4ab5dba35166a976c3d6293913501fdfc79a3222395388fc6208641ab8bc9359
+          value: quay.io/konflux-ci/tekton-catalog/task-run-opm-command-oci-ta:0.1@sha256:62a85157476ab5854b7f2c80d0edbe4e9168dea29943e2e24f0ae0462811e4f2
         - name: kind
           value: task
         resolver: bundles
