@@ -770,6 +770,7 @@ properties:
         - ebpf
       labels:
         operatorframework.io/arch.amd64: "true"
+        operatorframework.io/arch.ppc64le: "true"
       links:
         - name: Security Profiles Operator
           url: https://github.com/openshift/security-profiles-operator
@@ -1158,6 +1159,7 @@ properties:
         - ebpf
       labels:
         operatorframework.io/arch.amd64: supported
+        operatorframework.io/arch.ppc64le: supported
       links:
         - name: Security Profiles Operator
           url: https://github.com/openshift/security-profiles-operator
@@ -1546,6 +1548,7 @@ properties:
         - ebpf
       labels:
         operatorframework.io/arch.amd64: supported
+        operatorframework.io/arch.ppc64le: supported
       links:
         - name: Security Profiles Operator
           url: https://github.com/openshift/security-profiles-operator
@@ -2339,6 +2342,7 @@ properties:
         - ebpf
       labels:
         operatorframework.io/arch.amd64: supported
+        operatorframework.io/arch.ppc64le: supported
       links:
         - name: Security Profiles Operator
           url: https://github.com/openshift/security-profiles-operator
