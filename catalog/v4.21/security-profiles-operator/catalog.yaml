@@ -1968,7 +1968,7 @@ relatedImages:
     name: selinuxd-fedora
 schema: olm.bundle
 ---
-image: registry.redhat.io/compliance/openshift-security-profiles-operator-bundle@sha256:6741d84d36fefacab20e04e7b17847d2210a1709486856b20d372aff0961d922
+image: registry.redhat.io/compliance/openshift-security-profiles-operator-bundle@sha256:8b198543569fa23006f10dbbe9e592fe848dc02cda2f50d71bc377c6d238481e
 name: security-profiles-operator.v0.10.0
 package: security-profiles-operator
 properties:
@@ -2339,6 +2339,7 @@ properties:
         - ebpf
       labels:
         operatorframework.io/arch.amd64: supported
+        operatorframework.io/arch.ppc64le: supported
       links:
         - name: Security Profiles Operator
           url: https://github.com/openshift/security-profiles-operator
@@ -2350,8 +2351,8 @@ properties:
         name: Red Hat
         url: https://www.redhat.com
 relatedImages:
-  - image: registry.redhat.io/compliance/openshift-security-profiles-operator-bundle@sha256:6741d84d36fefacab20e04e7b17847d2210a1709486856b20d372aff0961d922
+  - image: registry.redhat.io/compliance/openshift-security-profiles-operator-bundle@sha256:8b198543569fa23006f10dbbe9e592fe848dc02cda2f50d71bc377c6d238481e
     name: ""
-  - image: registry.redhat.io/compliance/openshift-security-profiles-rhel8-operator@sha256:a8824e34d1ea176ae272be4c63f66bf4b21d286d783be3d57048a46a4bcc1155
+  - image: registry.redhat.io/compliance/openshift-security-profiles-rhel8-operator@sha256:d21d88c128307ff2a91828c86b9382d10a0021b1240cf94d38ad7ae6c1ca58cc
     name: ""
 schema: olm.bundle
