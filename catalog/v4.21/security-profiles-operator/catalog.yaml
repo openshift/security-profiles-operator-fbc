@@ -1968,7 +1968,7 @@ relatedImages:
     name: selinuxd-fedora
 schema: olm.bundle
 ---
-image: registry.redhat.io/compliance/openshift-security-profiles-operator-bundle@sha256:8b198543569fa23006f10dbbe9e592fe848dc02cda2f50d71bc377c6d238481e
+image: registry.redhat.io/compliance/openshift-security-profiles-operator-bundle@sha256:d9a74f1f3d34dea59a842bd7196f811cf49855866bc00e356b985cde5e21534e
 name: security-profiles-operator.v0.10.0
 package: security-profiles-operator
 properties:
@@ -2264,7 +2264,7 @@ properties:
           ]
         capabilities: Basic Install
         categories: Security
-        createdAt: "2025-08-13T11:56:07Z"
+        createdAt: "2026-02-09T07:45:11Z"
         features.operators.openshift.io/disconnected: "true"
         features.operators.openshift.io/fips-compliant: "true"
         features.operators.openshift.io/proxy-aware: "false"
@@ -2277,7 +2277,7 @@ properties:
         operatorframework.io/os.linux: supported
         operatorframework.io/suggested-namespace: openshift-security-profiles
         operators.openshift.io/valid-subscription: '["OpenShift Kubernetes Engine", "OpenShift Container Platform", "OpenShift Platform Plus"]'
-        operators.operatorframework.io/builder: operator-sdk-v1.37.0
+        operators.operatorframework.io/builder: operator-sdk-v1.39.2
         operators.operatorframework.io/project_layout: go.kubebuilder.io/v4
       apiServiceDefinitions: {}
       crdDescriptions:
@@ -2351,8 +2351,8 @@ properties:
         name: Red Hat
         url: https://www.redhat.com
 relatedImages:
-  - image: registry.redhat.io/compliance/openshift-security-profiles-operator-bundle@sha256:8b198543569fa23006f10dbbe9e592fe848dc02cda2f50d71bc377c6d238481e
+  - image: registry.redhat.io/compliance/openshift-security-profiles-operator-bundle@sha256:d9a74f1f3d34dea59a842bd7196f811cf49855866bc00e356b985cde5e21534e
     name: ""
-  - image: registry.redhat.io/compliance/openshift-security-profiles-rhel8-operator@sha256:d21d88c128307ff2a91828c86b9382d10a0021b1240cf94d38ad7ae6c1ca58cc
+  - image: registry.redhat.io/compliance/openshift-security-profiles-rhel8-operator@sha256:5a9358aa76c676465075adccd28c78e81b16b6d20eb442f634f3e2c50e7182ac
     name: ""
 schema: olm.bundle
