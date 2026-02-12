@@ -1968,7 +1968,7 @@ relatedImages:
     name: selinuxd-fedora
 schema: olm.bundle
 ---
-image: registry.redhat.io/compliance/openshift-security-profiles-operator-bundle@sha256:d9a74f1f3d34dea59a842bd7196f811cf49855866bc00e356b985cde5e21534e
+image: registry.redhat.io/compliance/openshift-security-profiles-operator-bundle@sha256:890b4c5255f0817afd30880ddde5586984ac10dbdf39f0ad31759821177e7b4d
 name: security-profiles-operator.v0.10.0
 package: security-profiles-operator
 properties:
@@ -2351,8 +2351,8 @@ properties:
         name: Red Hat
         url: https://www.redhat.com
 relatedImages:
-  - image: registry.redhat.io/compliance/openshift-security-profiles-operator-bundle@sha256:d9a74f1f3d34dea59a842bd7196f811cf49855866bc00e356b985cde5e21534e
+  - image: registry.redhat.io/compliance/openshift-security-profiles-operator-bundle@sha256:890b4c5255f0817afd30880ddde5586984ac10dbdf39f0ad31759821177e7b4d
     name: ""
-  - image: registry.redhat.io/compliance/openshift-security-profiles-rhel8-operator@sha256:5a9358aa76c676465075adccd28c78e81b16b6d20eb442f634f3e2c50e7182ac
+  - image: registry.redhat.io/compliance/openshift-security-profiles-rhel8-operator@sha256:060bff921b085ae8405720bc158ad8bdd0467f7f7cd838bc3f92f235f1c531ab
     name: ""
 schema: olm.bundle
