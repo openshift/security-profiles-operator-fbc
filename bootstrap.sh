@@ -10,7 +10,14 @@ for VERSION in "${OCP_VERSIONS[@]}"; do
     mkdir -p "catalog/v${VERSION}/security-profiles-operator"
     cp "${CONTAINERFILE}" "catalog/v${VERSION}/Containerfile"
     sed -i "s/OCP_VERSION/${VERSION}/g" "catalog/v${VERSION}/Containerfile"
-    opm alpha convert-template basic -o yaml "./catalog-migrate-${VERSION}/security-profiles-operator/catalog.json" > "catalog/v${VERSION}/catalog-template.yaml"
+    if [ -f "./catalog-migrate-${VERSION}/security-profiles-operator/catalog.json" ]; then
+        opm alpha convert-template basic -o yaml "./catalog-migrate-${VERSION}/security-profiles-operator/catalog.json" > "catalog/v${VERSION}/catalog-template.yaml"
+    else
+        # After moving to Konflux, we need to boostrap the catalog from the previous version
+        PREV_MINOR=$(( ${VERSION##*.} - 1 ))
+        PREV_VERSION="${VERSION%%.*}.${PREV_MINOR}"
+        cp "catalog/v${PREV_VERSION}/catalog-template.yaml" "catalog/v${VERSION}/catalog-template.yaml"
+    fi
     # # --- 1) Render the new bundle into a temp file ---
     if [[ "$VERSION" =~ ("4.12"|"4.13"|"4.14"|"4.15"|"4.16") ]]; then
         opm alpha render-template basic -o yaml "catalog/v${VERSION}/catalog-template.yaml" > "catalog/v${VERSION}/security-profiles-operator/catalog.yaml"
