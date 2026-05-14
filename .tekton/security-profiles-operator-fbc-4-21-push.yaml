@@ -10,7 +10,6 @@ metadata:
     pipelinesascode.tekton.dev/on-cel-expression: event == "push" && target_branch
       == "main" && ( "catalog/v4.21/***".pathChanged() || ".tekton/security-profiles-operator-fbc-4-21-push.yaml".pathChanged()
       || "catalog/v4.21/Containerfile".pathChanged() )
-  creationTimestamp: null
   labels:
     appstudio.openshift.io/application: security-profiles-operator-fbc-4-21
     appstudio.openshift.io/component: security-profiles-operator-fbc-4-21
