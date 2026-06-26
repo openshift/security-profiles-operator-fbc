@@ -152,7 +152,7 @@ spec:
         - name: name
           value: git-clone-oci-ta
         - name: bundle
-          value: quay.io/konflux-ci/tekton-catalog/task-git-clone-oci-ta:0.2@sha256:89da85c1508b3a2b7ad884c1215b9fd3a7d9e28c2335aca6750948d129707035
+          value: quay.io/konflux-ci/tekton-catalog/task-git-clone-oci-ta:0.2@sha256:52827a47564514f6accab971b8fad4f1c1cf59997507ed7c4e534615eeeae567
         - name: kind
           value: task
         resolver: bundles
@@ -180,7 +180,7 @@ spec:
         - name: name
           value: run-opm-command-oci-ta
         - name: bundle
-          value: quay.io/konflux-ci/tekton-catalog/task-run-opm-command-oci-ta:0.1@sha256:75853116022a0d633c7d142884cec5e1535def5ba42acda59fe1e65a7363b5c5
+          value: quay.io/konflux-ci/tekton-catalog/task-run-opm-command-oci-ta:0.1@sha256:7d117044c260763f22ff9035e204ac45969835c4199743063c8079ccac0480d1
         - name: kind
           value: task
         resolver: bundles
@@ -333,7 +333,7 @@ spec:
         - name: name
           value: validate-fbc
         - name: bundle
-          value: quay.io/konflux-ci/tekton-catalog/task-validate-fbc:0.1@sha256:30315380adf97fcea062c64c7f323b31ab553093cbd66f867cb03de23872d93a
+          value: quay.io/konflux-ci/tekton-catalog/task-validate-fbc:0.1@sha256:1775e829842cbabe3537a543544bc1c3a39de114f5657462f436c09194250b5a
         - name: kind
           value: task
         resolver: bundles
@@ -383,7 +383,7 @@ spec:
         - name: name
           value: fbc-fips-check-oci-ta
         - name: bundle
-          value: quay.io/konflux-ci/tekton-catalog/task-fbc-fips-check-oci-ta:0.1@sha256:f2355f8053765f011f9ad90badb1113883666ec6733072f55947c5cda5f814a6
+          value: quay.io/konflux-ci/tekton-catalog/task-fbc-fips-check-oci-ta:0.1@sha256:e957d0399fb5579163f00967aea2c137cf25d0679592e4a480e8d850db18d4f0
         - name: kind
           value: task
         resolver: bundles
