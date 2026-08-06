@@ -200,7 +200,7 @@ spec:
         - name: name
           value: fbc-inject-lifecycle-oci-ta
         - name: bundle
-          value: quay.io/konflux-ci/tekton-catalog/task-fbc-inject-lifecycle-oci-ta:0.1@sha256:a636970f2f7ff1c8156ad92e3c6bde96ce532a3195b24cc3ed4025d7d609e6eb
+          value: quay.io/konflux-ci/tekton-catalog/task-fbc-inject-lifecycle-oci-ta:0.1@sha256:da1217be1dcec3d5b5140ea351466607005481397b31f2b81108c4fd3012fbde
         - name: kind
           value: task
         resolver: bundles
@@ -384,7 +384,7 @@ spec:
         - name: name
           value: validate-fbc
         - name: bundle
-          value: quay.io/konflux-ci/tekton-catalog/task-validate-fbc:0.2@sha256:8988a61a5680521d583dc3a4c7d378529337ac99cf521e38a2786b99824f64f6
+          value: quay.io/konflux-ci/tekton-catalog/task-validate-fbc:0.3@sha256:5ac2ab06fa8b7b7dfaa7a57cf68d3dd8de3fa9c7d6ebaef17626509c45f234a3
         - name: kind
           value: task
         resolver: bundles
