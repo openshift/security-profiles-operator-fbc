@@ -3,7 +3,7 @@ set -euo pipefail
 IFS=$'\n\t'
 
 # --- CONFIGURATION ---
-OCP_VERSIONS=(4.12 4.13 4.14 4.15 4.16 4.17 4.18 4.19 4.20 4.21 4.22 4.23)
+OCP_VERSIONS=(4.12 4.13 4.14 4.15 4.16 4.17 4.18 4.19 4.20 4.21 4.22 4.23 5.0)
 
 # Old (tag-based) image:
 NEW_BUNDLE="quay.io/redhat-user-workloads/ocp-isc-tenant/security-profiles-operator-bundle-release:release-0.10"
@@ -12,7 +12,7 @@ NEW_BUNDLE="quay.io/redhat-user-workloads/ocp-isc-tenant/security-profiles-opera
 REDHAT_REGISTRY_REPO="registry.redhat.io/compliance/openshift-security-profiles-operator-bundle"
 
 # (Optional) Some additional parameters you might use later
-OP_V="0.10.0"
+OP_V="0.10.1"
 CSV_NEW="security-profiles-operator.v${OP_V}"
 SKIP_RANGE=">=0.4.1 <${OP_V}"
 
