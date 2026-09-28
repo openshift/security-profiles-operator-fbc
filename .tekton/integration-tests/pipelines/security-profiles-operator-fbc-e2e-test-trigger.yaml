@@ -91,7 +91,7 @@ spec:
                 value: "$(params.OCP_CI_JOB_NAME)"
               - name: INDEX_IMAGE
                 value: "$(params.INDEX_IMAGE)"
-            image: registry.redhat.io/openshift4/ose-cli:latest
+            image: registry.redhat.io/openshift4/ose-cli-rhel9:v4.20
             script: |
               # Apply delay to stagger concurrent test triggers
               INITIAL_DELAY=$(( (RANDOM % 60) + 5 ))  # Reduced to 5-65 seconds
