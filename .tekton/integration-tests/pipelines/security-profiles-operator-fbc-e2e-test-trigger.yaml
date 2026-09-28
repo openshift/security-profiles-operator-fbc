@@ -93,11 +93,11 @@ spec:
                 value: "$(params.INDEX_IMAGE)"
             image: registry.redhat.io/openshift4/ose-cli:latest
             script: |
-              # Read the token from the secret file
-              GANGWAY_API_TOKEN=$(cat /secrets/gangway-api-token/gangway_api_token)
+              # Apply delay to stagger concurrent test triggers
+              INITIAL_DELAY=$(( (RANDOM % 60) + 5 ))  # Reduced to 5-65 seconds
+              echo "Initial stagger delay: ${INITIAL_DELAY}s"
+              sleep $INITIAL_DELAY
 
-              echo "Trigger the OpenShift CI job"
-              
               # Create the JSON payload dynamically with the configurable key
               dnf -y install jq
               JSON_PAYLOAD=$(jq -n \
@@ -111,55 +111,88 @@ spec:
                     }
                   }
                 }')
-              
+
               echo "JSON payload:"
               echo "${JSON_PAYLOAD}"
-              
-              RESPONSE=$(curl -X POST -d "${JSON_PAYLOAD}" -H "Content-Type: application/json" -H "Authorization: Bearer ${GANGWAY_API_TOKEN}" "${GANGWAY_API_URL}/v1/executions/${OCP_CI_JOB_NAME}")
 
-              echo "Job trigger response:"
-              echo "${RESPONSE}"
+              # Read the token from the secret file
+              GANGWAY_API_TOKEN=$(cat /secrets/gangway-api-token/gangway_api_token)
 
-              # Extract job ID from the response
-              JOB_ID=$(echo "${RESPONSE}" | jq -r '.id')
-              echo "Job ID: ${JOB_ID}"
+              # Retry the trigger POST only. Once a job is triggered we must never POST
+              # again: every re-POST launches a duplicate prow job that competes for the
+              # same machine pool.
+              MAX_RETRIES=3
+              RETRY=0
+              JOB_ID=""
 
-              if [ "${JOB_ID}" != "null" ] && [ -n "${JOB_ID}" ]; then
-                echo "Fetching job details for ID: ${JOB_ID}"
-                
-                # Poll job details until job_url is available
-                MAX_ATTEMPTS=60  # Maximum number of attempts (5 minutes with 5-second intervals)
-                ATTEMPT=0
-                JOB_URL=""
-                
-                while [ ${ATTEMPT} -lt ${MAX_ATTEMPTS} ]; do
-                  echo "Attempt $((ATTEMPT + 1))/${MAX_ATTEMPTS}: Fetching job details..."
-                  
-                  JOB_DETAILS=$(curl -s -X GET -H "Authorization: Bearer ${GANGWAY_API_TOKEN}" "${GANGWAY_API_URL}/v1/executions/${JOB_ID}")
-                  echo "Job details response:"
-                  echo "${JOB_DETAILS}"
-                  
-                  # Extract job_url from the response
-                  JOB_URL=$(echo "${JOB_DETAILS}" | jq -r '.job_url')
-                  
-                  if [ "${JOB_URL}" != "null" ] && [ -n "${JOB_URL}" ] && [ "${JOB_URL}" != "" ]; then
-                    echo "Job URL found: ${JOB_URL}"
-                    break
-                  else
-                    echo "Job URL not yet available, waiting 5 seconds..."
-                    sleep 15
-                    ATTEMPT=$((ATTEMPT + 1))
-                  fi
-                done
-                
-                if [ "${JOB_URL}" = "null" ] || [ -z "${JOB_URL}" ] || [ "${JOB_URL}" = "" ]; then
-                  echo "Job URL not available after ${MAX_ATTEMPTS} attempts"
-                  exit 1
-                else
-                  echo "Final job details with URL:"
-                  echo "${JOB_DETAILS}"
+              while [ ${RETRY} -lt ${MAX_RETRIES} ]; do
+                if [ ${RETRY} -gt 0 ]; then
+                  BACKOFF=$(( 30 * RETRY + (RANDOM % 30) ))
+                  echo "Retry attempt ${RETRY}/${MAX_RETRIES} - waiting ${BACKOFF} seconds before retry..."
+                  sleep ${BACKOFF}
                 fi
-              else
+
+                echo "Trigger the OpenShift CI job"
+                # A rate-limited response (HTTP 429) is an HTML page, not JSON. Guard the
+                # curl and jq calls: under Tekton's default `set -e` an unguarded failure
+                # aborts the whole step before any retry logic can run.
+                RESPONSE=$(curl -s --max-time 60 -X POST -d "${JSON_PAYLOAD}" -H "Content-Type: application/json" -H "Authorization: Bearer ${GANGWAY_API_TOKEN}" "${GANGWAY_API_URL}/v1/executions/${OCP_CI_JOB_NAME}" || true)
+
+                echo "Job trigger response:"
+                echo "${RESPONSE}"
+
+                # Non-JSON responses yield an empty JOB_ID and fall through to a retry
+                JOB_ID=$(echo "${RESPONSE}" | jq -r '.id // empty' 2>/dev/null || true)
+                echo "Job ID: ${JOB_ID}"
+
+                if [ -n "${JOB_ID}" ] && [ "${JOB_ID}" != "null" ]; then
+                  break
+                fi
                 echo "Failed to extract job ID from response"
+                RETRY=$((RETRY + 1))
+              done
+
+              if [ -z "${JOB_ID}" ] || [ "${JOB_ID}" = "null" ]; then
+                echo "Failed to trigger job after ${MAX_RETRIES} attempts"
                 exit 1
               fi
+
+              echo "Fetching job details for ID: ${JOB_ID}"
+
+              # Poll job details until job_url is available. Rate-limited or malformed
+              # responses are treated as "not ready yet", never as fatal.
+              MAX_ATTEMPTS=60
+              ATTEMPT=0
+              JOB_URL=""
+
+              while [ ${ATTEMPT} -lt ${MAX_ATTEMPTS} ]; do
+                echo "Attempt $((ATTEMPT + 1))/${MAX_ATTEMPTS}: Fetching job details..."
+
+                JOB_DETAILS=$(curl -s --max-time 60 -X GET -H "Authorization: Bearer ${GANGWAY_API_TOKEN}" "${GANGWAY_API_URL}/v1/executions/${JOB_ID}" || true)
+                echo "Job details response:"
+                echo "${JOB_DETAILS}"
+
+                JOB_URL=$(echo "${JOB_DETAILS}" | jq -r '.job_url // empty' 2>/dev/null || true)
+
+                if [ -n "${JOB_URL}" ] && [ "${JOB_URL}" != "null" ]; then
+                  echo "Job URL found: ${JOB_URL}"
+                  echo "Final job details with URL:"
+                  echo "${JOB_DETAILS}"
+                  exit 0
+                fi
+
+                # Back off progressively while gangway is rate limiting us (cap at 2 min)
+                SLEEP=$(( 15 + ATTEMPT / 4 * 15 + (RANDOM % 10) ))
+                if [ ${SLEEP} -gt 120 ]; then SLEEP=120; fi
+                echo "Job URL not yet available, waiting ${SLEEP} seconds..."
+                sleep ${SLEEP}
+                ATTEMPT=$((ATTEMPT + 1))
+              done
+
+              # The job WAS triggered; only the URL lookup failed. Do not fail the task:
+              # a red result invites restarts, and each restart would trigger a duplicate
+              # prow job. The run can be located on the CI deck via the job ID above.
+              echo "WARNING: job URL not available after ${MAX_ATTEMPTS} attempts."
+              echo "The prow job was triggered successfully (job ID ${JOB_ID})."
+              echo "Look it up at ${GANGWAY_API_URL}/v1/executions/${JOB_ID} or on the CI deck."
+              exit 0
