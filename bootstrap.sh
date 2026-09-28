@@ -4,6 +4,8 @@ for VERSION in "${OCP_VERSIONS[@]}"; do
     CONTAINERFILE="Containerfile-rhel-9.in"
     if [[ "$VERSION" =~ ("4.12"|"4.13"|"4.14") ]]; then
             CONTAINERFILE="Containerfile-rhel-8.in"
+    elif [[ "$VERSION" == 5.* ]]; then
+            CONTAINERFILE="Containerfile-ocp5.in"
     fi
 
     opm migrate "registry.redhat.io/redhat/redhat-operator-index:v${VERSION}" "./catalog-migrate-${VERSION}"
@@ -14,8 +16,12 @@ for VERSION in "${OCP_VERSIONS[@]}"; do
         opm alpha convert-template basic -o yaml "./catalog-migrate-${VERSION}/security-profiles-operator/catalog.json" > "catalog/v${VERSION}/catalog-template.yaml"
     else
         # After moving to Konflux, we need to boostrap the catalog from the previous version
-        PREV_MINOR=$(( ${VERSION##*.} - 1 ))
-        PREV_VERSION="${VERSION%%.*}.${PREV_MINOR}"
+        if [[ "$VERSION" == "5.0" ]]; then
+            PREV_VERSION="4.23"
+        else
+            PREV_MINOR=$(( ${VERSION##*.} - 1 ))
+            PREV_VERSION="${VERSION%%.*}.${PREV_MINOR}"
+        fi
         cp "catalog/v${PREV_VERSION}/catalog-template.yaml" "catalog/v${VERSION}/catalog-template.yaml"
     fi
     # # --- 1) Render the new bundle into a temp file ---
