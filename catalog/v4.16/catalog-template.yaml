@@ -27,6 +27,9 @@ entries:
   - name: security-profiles-operator.v0.10.1
     replaces: security-profiles-operator.v0.10.0
     skipRange: '>=0.4.1 <0.10.1'
+  - name: security-profiles-operator.v1.0.1
+    replaces: security-profiles-operator.v0.10.1
+    skipRange: '>=0.4.1 <1.0.1'
   name: release-alpha-rhel-8
   package: security-profiles-operator
   schema: olm.channel
@@ -43,6 +46,8 @@ entries:
 - image: registry.redhat.io/compliance/openshift-security-profiles-operator-bundle@sha256:4604d631307390e44fea4729d87470a32f294f380b4c7c9448a8e1a82ccec5b7
   schema: olm.bundle
 - image: registry.redhat.io/compliance/openshift-security-profiles-operator-bundle@sha256:c72387fec40491e8df9125ca05edfc8809023c91177361bc2fd16f8674d54163
+  schema: olm.bundle
+- image: registry.redhat.io/compliance/openshift-security-profiles-operator-bundle@sha256:3818e4f8c894d36301545c2e4e4f83df64dcb3faef357a1d0e98959d709206b5
   schema: olm.bundle
 schema: olm.template.basic
 
